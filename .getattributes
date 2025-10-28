@@ -1,0 +1,40 @@
+# Normalize all text files to use LF endings
+* text=auto eol=lf
+
+# Unity text-based assets
+*.unity text eol=lf
+*.prefab text eol=lf
+*.mat text eol=lf
+*.anim text eol=lf
+*.asset text eol=lf
+*.meta text eol=lf
+*.shader text eol=lf
+*.compute text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.cs text eol=lf
+
+# Binary files (don’t try to diff or merge them)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.psd binary
+*.tga binary
+*.fbx binary
+*.dll binary
+*.exe binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.zip binary
+*.unitypackage binary
+
+# Unity Smart Merge (YAMLMerge)
+*.unity merge=unityyamlmerge eol=lf
+*.prefab merge=unityyamlmerge eol=lf
+*.mat merge=unityyamlmerge eol=lf
+*.asset merge=unityyamlmerge eol=lf
+*.anim merge=unityyamlmerge eol=lf
+
