@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a46a5233c3eb0428a87b6c4d3bc7cbcf
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - proximityUI: {instanceID: 0}
+  - playerControllerToDisable: {instanceID: 0}
+  - puzzleCanvas: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
