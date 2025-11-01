@@ -16,6 +16,9 @@ public class PlayerControler : MonoBehaviour
     Rigidbody _Rb { get; set; }
     Camera _MainCamera { get; set; }
 
+    // Permet d'activer/désactiver le mouvement du joueur (utiliser SetMovementEnabled)
+    bool _CanMove = true;
+
     // Valeurs exposées
     [SerializeField]
     float MoveSpeed = 5.0f;
@@ -44,6 +47,13 @@ public class PlayerControler : MonoBehaviour
     // Vérifie les entrées de commandes du joueur
     void Update()
     {
+        if (!_CanMove)
+        {
+
+            _Anim.SetFloat("MoveSpeed", 0);
+            return;
+        }
+
         var horizontal = Input.GetAxis("Horizontal") * MoveSpeed;
         HorizontalMove(horizontal);
         FlipCharacter(horizontal);
@@ -53,6 +63,14 @@ public class PlayerControler : MonoBehaviour
     // Gère le mouvement horizontal
     void HorizontalMove(float horizontal)
     {
+        if (!_CanMove)
+        {
+            // stoppe le mouvement horizontal
+            _Rb.linearVelocity = new Vector3(_Rb.linearVelocity.x, _Rb.linearVelocity.y, 0);
+            _Anim.SetFloat("MoveSpeed", 0);
+            return;
+        }
+
         _Rb.linearVelocity = new Vector3(_Rb.linearVelocity.x, _Rb.linearVelocity.y, horizontal);
         _Anim.SetFloat("MoveSpeed", Mathf.Abs(horizontal));
     }
@@ -60,6 +78,8 @@ public class PlayerControler : MonoBehaviour
     // Gère le saut du personnage, ainsi que son animation de saut
     void CheckJump()
     {
+        if (!_CanMove) return;
+
         if (_Grounded)
         {
             if (Input.GetButtonDown("Jump"))
@@ -93,7 +113,7 @@ public class PlayerControler : MonoBehaviour
 
     // Collision avec le sol
     void OnCollisionEnter(Collision coll)
-    {        
+    {
         // On s'assure de bien être en contact avec le sol
         if ((WhatIsGround & (1 << coll.gameObject.layer)) == 0)
             return;
@@ -103,6 +123,18 @@ public class PlayerControler : MonoBehaviour
         {
             _Grounded = true;
             _Anim.SetBool("Grounded", _Grounded);
+        }
+    }
+
+    // Appel public pour activer/désactiver le mouvement depuis d'autres scripts
+    public void SetMovementEnabled(bool enabled)
+    {
+        _CanMove = enabled;
+        if (!enabled)
+        {
+
+            _Rb.linearVelocity = new Vector3(_Rb.linearVelocity.x, _Rb.linearVelocity.y, 0);
+            _Anim.SetFloat("MoveSpeed", 0);
         }
     }
 }

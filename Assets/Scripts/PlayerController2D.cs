@@ -36,7 +36,7 @@ public class PlayerMovement2D : MonoBehaviour
     float coyoteTimer;
     float jumpBufferTimer;
     bool jumpHeld;
-
+    private bool canMove = true;
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -60,6 +60,21 @@ public class PlayerMovement2D : MonoBehaviour
 
     void Update()
     {
+
+        if (!canMove)
+        {
+            input.x = 0;
+            grounded = IsGrounded();
+            coyoteTimer = grounded ? coyoteTime : Mathf.Max(0f, coyoteTimer - Time.deltaTime);
+            spriteRenderer.flipX = false;
+            animator.SetBool("IsWalking", false);
+
+
+            jumpBufferTimer = Mathf.Max(0f, jumpBufferTimer - Time.deltaTime);
+            jumpHeld = false;
+            return;
+        }
+
         input.x = Input.GetAxisRaw("Horizontal");
 
         grounded = IsGrounded();
@@ -99,7 +114,15 @@ public class PlayerMovement2D : MonoBehaviour
         rigidBody.linearVelocity = new Vector2(vx, vy);
     }
 
-
+    public void SetMovementEnabled(bool enabled)
+    {
+        canMove = enabled;
+        if (!canMove)
+        {
+            input = Vector2.zero;
+            rigidBody.linearVelocity = new Vector2(0, rigidBody.linearVelocityY);
+        }
+    }
     bool IsGrounded()
     {
         Bounds b = boxCollider.bounds;
