@@ -25,7 +25,7 @@ public class PlayerQuicksand : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Helpful log so you can see which object triggered and whether it has the QuicksandZone component
+
         Debug.Log("Player: OnTriggerEnter2D -> " + other.gameObject.name + " (has QuicksandZone: " + (other.GetComponent<QuicksandZone>() != null) + ")");
 
         var zone = other.GetComponent<QuicksandZone>();
@@ -64,16 +64,16 @@ public class PlayerQuicksand : MonoBehaviour
                 if (rb == null) rb = GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    // release body from current quicksand zone so the zone doesn't counter the escape
+                    // release body from current quicksand zone 
                     currentZone?.ReleaseBody(rb);
 
-                    // reset vertical velocity then apply upward impulse
+
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                     rb.AddForce(Vector2.up * escapeImpulse, ForceMode2D.Impulse);
                     Debug.Log("Player: escaped quicksand");
                 }
                 jumps = 0;
-                // mark as out for the player's logic; the zone will still see the player inside the trigger
+
                 inSand = false;
                 currentZone = null;
             }
