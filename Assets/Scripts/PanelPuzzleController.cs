@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ public class PanelPuzzleController : MonoBehaviour
     [SerializeField] private SlotCycler slot1;
     [SerializeField] private SlotCycler slot2;
     [SerializeField] private SlotCycler slot3;
+    [SerializeField] private AudioSource audioSource;
+    float audioLength = 3f;
 
     [Header("Correct combination (indexes)")]
     // Example: 0 = glyph1, 1 = glyph2, 2 = glyph3
@@ -68,15 +71,26 @@ public class PanelPuzzleController : MonoBehaviour
 
 
 
+
+            //  open the door 
+            if (audioSource)
+            {
+                Debug.Log("Panel puzzle solved! Opening the door.");
+                audioSource.time = 3f;
+                audioSource.Play();
+            }
+            var runner = GameObject.FindGameObjectWithTag("Object").GetComponent<DoorSequence>();
+            if (runner)
+            {
+                runner.PlayFromAndClose(door, startAtSeconds: 3f, playSeconds: 2.5f);
+            }
+
             var doorProx = door.GetComponent<DoorProximityByDistance>()
                            ?? door.GetComponentInChildren<DoorProximityByDistance>();
             if (doorProx != null)
             {
                 doorProx.HideEnigmeUI();
             }
-
-            //  open the door 
-            door.SetActive(false);
         }
 
     }
@@ -94,4 +108,5 @@ public class PanelPuzzleController : MonoBehaviour
         var btn = slot.GetComponent<Button>() ?? slot.GetComponentInChildren<Button>(true);
         if (btn) btn.interactable = value;
     }
+
 }
