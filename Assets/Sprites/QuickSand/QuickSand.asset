@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: QuickSand
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 34e400f6f19154addbd702c02e89317e, type: 3}
+  - {fileID: 21300000, guid: 0b0147a1937a444b29f1982a634146cf, type: 3}
+  - {fileID: 21300000, guid: 86a51d286472f4ff38778904e4d7b0a7, type: 3}
+  - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
+  - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
+  - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
+  m_MinSpeed: 6
+  m_MaxSpeed: 8
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 2
+  m_TileAnimationFlags: 0

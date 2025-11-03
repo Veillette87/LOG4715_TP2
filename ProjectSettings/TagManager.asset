@@ -10,11 +10,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - 
-  - 
+  - Quicksand
   - Floor
   - Pushable
   - 
@@ -51,6 +51,9 @@ TagManager:
     locked: 0
   - name: Character
     uniqueID: 1563122863
+    locked: 0
+  - name: QuickSand
+    uniqueID: 4062904101
     locked: 0
   - name: UI
     uniqueID: 1626574557
