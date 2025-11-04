@@ -29,9 +29,7 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] float groundCheckDistance = 0.06f;
     [SerializeField] float groundCheckInset = 0.02f;
 
-    [Header("Mode")]
-    public MovementMode movementMode = MovementMode.Normal;
-
+    MovementMode movementMode = MovementMode.Normal;
     IExternalKinematics ext;
     Rigidbody2D rb;
     BoxCollider2D box;
