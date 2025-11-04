@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9000503916417244048}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,8 +68,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 6
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -105,6 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a190c82a1c8c3429f687f79f49d9a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTime: 0.25
-  offset: {x: 0, y: 0, z: -10}
+  smoothTime: 0.2
+  offset: {x: 0, y: 2, z: -10}
   target: {fileID: 2030373251922300811, guid: 76e885cca8ad748449491188ed613ac4, type: 3}
