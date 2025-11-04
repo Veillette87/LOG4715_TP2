@@ -59,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,7 +153,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 90142b502dca2a943be51d7c6c90c636, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -177,8 +177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  accel: 60
-  airAccel: 25
+  airAccel: 150
+  airMax: 8
   desiredJumpHeight: 3
   timeToApex: 0.4
   timeToFall: 0.35
@@ -189,6 +189,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   groundCheckDistance: 0.05
+  groundCheckInset: 0.02
 --- !u!95 &2766306175304101609
 Animator:
   serializedVersion: 7

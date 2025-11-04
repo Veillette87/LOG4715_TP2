@@ -69,7 +69,7 @@ public class DoorProximityByDistance : MonoBehaviour
         if (!player) return;
 
         // Check 2D movement script
-        var pm2 = player.GetComponent<PlayerMovement2D>() ?? player.GetComponentInChildren<PlayerMovement2D>();
+        var pm2 = player.GetComponent<PlayerController2D>() ?? player.GetComponentInChildren<PlayerController2D>();
         if (pm2 != null)
         {
             pm2.SetMovementEnabled(enabled);
