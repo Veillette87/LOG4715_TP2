@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum MovementMode { Normal, Grapple }
+public enum MovementMode { Normal, Grapple, Slide }
 
 public interface IExternalKinematics
 {
@@ -48,12 +48,20 @@ public class PlayerController2D : MonoBehaviour
     float gravityScaleDown;
     float gravityScaleLowJump;
 
+    bool isSliding = false;
+    bool slideHeld;
+    Vector2 normalColliderSize;
+    Vector2 normalColliderOffset;
+
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         box = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        normalColliderSize = box.size;
+        normalColliderOffset = box.offset;
         RecomputeJumpParameters();
     }
 
@@ -65,6 +73,7 @@ public class PlayerController2D : MonoBehaviour
             UpdateGroundingAndCoyote();
             UpdateJumpBuffer();
             jumpHeld = false;
+            slideHeld = false;
             sr.flipX = false;
             anim.SetBool("IsWalking", false);
             return;
@@ -72,6 +81,7 @@ public class PlayerController2D : MonoBehaviour
 
         ReadInput();
         UpdateGroundingAndCoyote();
+        UpdateSlide();
         UpdateFacingAndAnim();
         UpdateJumpBuffer();
     }
@@ -116,6 +126,7 @@ public class PlayerController2D : MonoBehaviour
     {
         input.x = Input.GetAxisRaw("Horizontal");
         jumpHeld = Input.GetButton("Jump");
+        slideHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
     }
 
     void UpdateGroundingAndCoyote()
@@ -185,6 +196,56 @@ public class PlayerController2D : MonoBehaviour
 
         return
             HitGround(left) || HitGround(mid) || HitGround(right);
+    }
+
+    void UpdateSlide()
+    {
+        if (slideHeld && grounded)
+        {
+            if (!isSliding)
+            {
+                StartSlide();
+            }
+        }
+        else
+        {
+            EndSlide();
+        }
+    }
+
+    void StartSlide()
+    {
+        isSliding = true;
+        anim.SetBool("IsSliding", isSliding);
+
+        float oldHeight = box.size.y;
+        float newHeight = oldHeight / 2f;
+        float heightDiff = oldHeight - newHeight;
+
+        box.size = new Vector2(box.size.x, newHeight);
+        box.offset = new Vector2(box.offset.x, box.offset.y - heightDiff / 2f);
+    }
+
+    void EndSlide()
+    {
+        if (!isSliding) return;
+
+        if (HasCeilingAbove())
+            return;
+
+        isSliding = false;
+        box.size = normalColliderSize;
+        box.offset = normalColliderOffset;
+        anim.SetBool("IsSliding", isSliding);
+    }
+
+    bool HasCeilingAbove()
+    {
+        Vector2 cliffCenter = (Vector2)transform.position + normalColliderOffset;
+        Vector2 size = normalColliderSize;
+        size -= new Vector2(0.01f, 0.01f);
+        RaycastHit2D hit = Physics2D.BoxCast(cliffCenter, size, 0f, Vector2.up, 0f, groundLayer);
+        return hit.collider != null;
     }
 
     bool HitGround(Vector2 origin)
