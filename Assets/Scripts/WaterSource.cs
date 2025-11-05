@@ -15,7 +15,7 @@ public class WaterSource : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerMovement2D pm = other.GetComponent<PlayerMovement2D>();
+            PlayerController2D pm = other.GetComponent<PlayerController2D>();
             if (pm != null)
             {
                 playerWaterBar = pm.waterBar;
@@ -48,14 +48,12 @@ public class WaterSource : MonoBehaviour
         if (!playerNearby || playerWaterBar == null)
             return;
 
-        // Si la barre est pleine
         if (playerWaterBar.waterLevel >= 1f)
         {
             if (drinkPrompt != null)
                 drinkPrompt.text = "Réservoir plein !";
             isRefilling = false;
 
-            // Si le joueur relâche E, on revient au texte normal
             if (!Input.GetKey(KeyCode.E))
             {
                 if (drinkPrompt != null)
@@ -65,7 +63,6 @@ public class WaterSource : MonoBehaviour
             return;
         }
 
-        // Si le joueur maintient E et que la barre n'est pas pleine
         if (Input.GetKey(KeyCode.E))
         {
             isRefilling = true;
@@ -78,11 +75,8 @@ public class WaterSource : MonoBehaviour
         }
         else
         {
-            // Si le joueur ne maintient plus E
             if (isRefilling)
-            {
                 isRefilling = false;
-            }
 
             if (drinkPrompt != null)
                 drinkPrompt.text = "Appuyez sur E pour boire";

@@ -29,7 +29,6 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] float groundCheckDistance = 0.06f;
     [SerializeField] float groundCheckInset = 0.02f;
 
-<<<<<<< HEAD
     [Header("Barre d'eau")]
     public WaterBarController waterBar;  // référence à ton script WaterBarController
 
@@ -37,39 +36,26 @@ public class PlayerController2D : MonoBehaviour
     public float pushDetectionDistance = 0.5f;
     public LayerMask pushableLayer;
 
-    private float jumpVelocity;
-    private float gravityScaleUp;
-    private float gravityScaleDown;
-    private float gravityScaleLowJump;
-
-    Rigidbody2D rigidBody;
-    BoxCollider2D boxCollider;
-    SpriteRenderer spriteRenderer;
-    Animator animator;
-=======
+    // Physique et états
     MovementMode movementMode = MovementMode.Normal;
     IExternalKinematics ext;
     Rigidbody2D rb;
     BoxCollider2D box;
     SpriteRenderer sr;
     Animator anim;
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
 
     Vector2 input;
     bool grounded;
     float coyoteTimer;
     float jumpBufferTimer;
     bool jumpHeld;
-<<<<<<< HEAD
-    private bool canMove = true;
-=======
     bool canMove = true;
 
+    // Calculs de gravité / saut
     float jumpVelocity;
     float gravityScaleUp;
     float gravityScaleDown;
     float gravityScaleLowJump;
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
 
     void Awake()
     {
@@ -107,7 +93,7 @@ public class PlayerController2D : MonoBehaviour
                 ApplyMovement();
                 break;
             case MovementMode.Grapple:
-                ext.Apply(ref rb);
+                ext?.Apply(ref rb);
                 break;
         }
     }
@@ -137,21 +123,6 @@ public class PlayerController2D : MonoBehaviour
 
     void ReadInput()
     {
-<<<<<<< HEAD
-        if (!canMove)
-        {
-            input.x = 0;
-            grounded = IsGrounded();
-            coyoteTimer = grounded ? coyoteTime : Mathf.Max(0f, coyoteTimer - Time.deltaTime);
-            spriteRenderer.flipX = false;
-            animator.SetBool("IsWalking", false);
-            jumpBufferTimer = Mathf.Max(0f, jumpBufferTimer - Time.deltaTime);
-            jumpHeld = false;
-            return;
-        }
-
-=======
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
         input.x = Input.GetAxisRaw("Horizontal");
         jumpHeld = Input.GetButton("Jump");
     }
@@ -162,25 +133,15 @@ public class PlayerController2D : MonoBehaviour
         coyoteTimer = grounded ? coyoteTime : Mathf.Max(0f, coyoteTimer - Time.deltaTime);
     }
 
-<<<<<<< HEAD
-        // Gère l'orientation du sprite
-        bool isWalking = Mathf.Abs(input.x) > 0.1f;
-        animator.SetBool("IsWalking", isWalking);
-
-        // ✅ Ne change le flip que si le joueur bouge vraiment
-        if (isWalking)
-        {
-            spriteRenderer.flipX = input.x < 0;
-        }
-=======
     void UpdateFacingAndAnim()
     {
         bool walking = movementMode == MovementMode.Normal && Mathf.Abs(input.x) > 0.1f;
         anim.SetBool("IsWalking", walking);
         anim.SetBool("IsSwinging", movementMode == MovementMode.Grapple);
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
 
-        sr.flipX = input.x < 0f;
+        // ✅ Ne change le flip que si le joueur bouge vraiment
+        if (walking)
+            sr.flipX = input.x < 0f;
     }
 
     void UpdateJumpBuffer()
@@ -189,19 +150,15 @@ public class PlayerController2D : MonoBehaviour
             jumpBufferTimer = jumpBufferTime;
         else
             jumpBufferTimer = Mathf.Max(0f, jumpBufferTimer - Time.deltaTime);
-<<<<<<< HEAD
 
         jumpHeld = Input.GetButton("Jump");
 
         // Détection de poussée
         DetectPushable();
-=======
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
     }
 
     void ApplyMovement()
     {
-<<<<<<< HEAD
         // --- Ajustement selon le niveau d’eau ---
         float waterFactor = 1f;
         if (waterBar != null)
@@ -214,12 +171,8 @@ public class PlayerController2D : MonoBehaviour
         float adjustedMoveSpeed = moveSpeed * waterFactor;
         float adjustedJumpVelocity = jumpVelocity * waterFactor;
 
-        float vx = input.x * adjustedMoveSpeed;
-        float vy = rigidBody.linearVelocityY;
-=======
         float vx = rb.linearVelocity.x;
         float vy = rb.linearVelocity.y;
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
 
         if (jumpBufferTimer > 0f && coyoteTimer > 0f)
         {
@@ -230,7 +183,7 @@ public class PlayerController2D : MonoBehaviour
 
         if (grounded)
         {
-            vx = input.x * moveSpeed;
+            vx = input.x * adjustedMoveSpeed;
         }
         else
         {
@@ -239,10 +192,9 @@ public class PlayerController2D : MonoBehaviour
             vx = Mathf.MoveTowards(vx, target, maxDelta);
         }
 
-        float vyNow = rb.linearVelocity.y;
-        if (vyNow > 0.01f)
+        if (vy > 0.01f)
             rb.gravityScale = jumpHeld ? gravityScaleUp : gravityScaleLowJump;
-        else if (vyNow < -0.01f)
+        else if (vy < -0.01f)
             rb.gravityScale = gravityScaleDown;
         else
             rb.gravityScale = gravityScaleDown;
@@ -250,10 +202,6 @@ public class PlayerController2D : MonoBehaviour
         rb.linearVelocity = new Vector2(vx, vy);
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 528bcef8ee184b453056d892fe86ba166768093c
     bool IsGrounded()
     {
         Bounds b = box.bounds;
@@ -261,8 +209,7 @@ public class PlayerController2D : MonoBehaviour
         Vector2 mid = new Vector2(b.center.x, b.min.y);
         Vector2 right = new Vector2(b.max.x - groundCheckInset, b.min.y);
 
-        return
-            HitGround(left) || HitGround(mid) || HitGround(right);
+        return HitGround(left) || HitGround(mid) || HitGround(right);
     }
 
     bool HitGround(Vector2 origin)
@@ -285,11 +232,11 @@ public class PlayerController2D : MonoBehaviour
     void DetectPushable()
     {
         // ✅ direction du regard du joueur
-        Vector2 direction = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+        Vector2 direction = sr.flipX ? Vector2.left : Vector2.right;
 
         // ✅ point de départ depuis le bord du collider
-        Bounds b = boxCollider.bounds;
-        Vector2 origin = spriteRenderer.flipX
+        Bounds b = box.bounds;
+        Vector2 origin = sr.flipX
             ? new Vector2(b.min.x - 0.02f, b.center.y) // côté gauche
             : new Vector2(b.max.x + 0.02f, b.center.y); // côté droit
 
@@ -302,21 +249,18 @@ public class PlayerController2D : MonoBehaviour
         if (hit.collider != null)
         {
             Pushable pushable = hit.collider.GetComponent<Pushable>();
-            if (pushable != null && Mathf.Abs(input.x) > 0.1f && grounded)
+            bool isPushing = Mathf.Abs(input.x) > 0.1f && grounded;
+            anim.SetBool("IsPushing", isPushing);
+
+            if (isPushing && pushable != null)
             {
-                // Le joueur pousse
                 Vector2 pushDir = new Vector2(input.x, 0);
                 pushable.Push(pushDir);
-                animator.SetBool("IsPushing", true);
-            }
-            else
-            {
-                animator.SetBool("IsPushing", false);
             }
         }
         else
         {
-            animator.SetBool("IsPushing", false);
+            anim.SetBool("IsPushing", false);
         }
     }
 }
