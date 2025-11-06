@@ -13,6 +13,9 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] float moveSpeed = 8f;
     [SerializeField] float airAccel = 40f;
     [SerializeField] float airMax = 8f;
+    [Header("Quicksand")]
+    [Tooltip("Multiplier applied to horizontal speed when the player is in quicksand (0..1)")]
+    [SerializeField] float sandSpeedMultiplier = 0.5f;
 
     [Header("Saut: cibles")]
     [SerializeField] float desiredJumpHeight = 3f;
@@ -43,6 +46,8 @@ public class PlayerController2D : MonoBehaviour
     BoxCollider2D box;
     SpriteRenderer sr;
     Animator anim;
+    // Reference to the PlayerQuicksand component so we can slow movement when in sand
+    PlayerQuicksand pq;
 
     Vector2 input;
     bool grounded;
@@ -69,6 +74,7 @@ public class PlayerController2D : MonoBehaviour
         box = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        pq = GetComponent<PlayerQuicksand>(); // may be null if the player doesn't have the component
         normalColliderSize = box.size;
         normalColliderOffset = box.offset;
         RecomputeJumpParameters();
@@ -168,6 +174,60 @@ public class PlayerController2D : MonoBehaviour
         DetectPushable();
     }
 
+//     void ApplyMovement()
+//     {
+//         // --- Ajustement selon le niveau d’eau ---
+//         float waterFactor = 1f;
+//         if (waterBar != null)
+//         {
+//             // Quand waterLevel = 1 → vitesse normale
+//             // Quand waterLevel = 0 → vitesse et saut divisés par 2
+//             waterFactor = Mathf.Lerp(0.5f, 1f, waterBar.waterLevel);
+//         }
+
+//         float adjustedMoveSpeed = moveSpeed * waterFactor;
+//         float adjustedJumpVelocity = jumpVelocity * waterFactor;
+
+//         float vx = rb.linearVelocity.x;
+//         float vy = rb.linearVelocity.y;
+
+//         // Determine current speed multiplier depending on whether player is in sand
+//         float speedMultiplier = (pq != null && pq.InSand) ? sandSpeedMultiplier : 1f;
+
+//         if (jumpBufferTimer > 0f && coyoteTimer > 0f)
+//         {
+//             vy = adjustedJumpVelocity;
+//             jumpBufferTimer = 0f;
+//             coyoteTimer = 0f;
+//         }
+
+//         if (grounded)
+//         {
+// <<<<<<< HEAD
+//             vx = input.x * adjustedMoveSpeed;
+// =======
+//             // Grounded movement uses full moveSpeed scaled by sand multiplier
+//             vx = input.x * moveSpeed * speedMultiplier;
+// >>>>>>> acb57a459d25a16b0727c5b21893b27e6f60d98e
+//         }
+//         else
+//         {
+//             // Air movement aims for airMax speed scaled by the same multiplier
+//             float target = input.x * airMax * speedMultiplier;
+//             float maxDelta = airAccel * Time.fixedDeltaTime;
+//             vx = Mathf.MoveTowards(vx, target, maxDelta);
+//         }
+
+//         if (vy > 0.01f)
+//             rb.gravityScale = jumpHeld ? gravityScaleUp : gravityScaleLowJump;
+//         else if (vy < -0.01f)
+//             rb.gravityScale = gravityScaleDown;
+//         else
+//             rb.gravityScale = gravityScaleDown;
+
+//         rb.linearVelocity = new Vector2(vx, vy);
+//     }
+
     void ApplyMovement()
     {
         // --- Ajustement selon le niveau d’eau ---
@@ -179,12 +239,19 @@ public class PlayerController2D : MonoBehaviour
             waterFactor = Mathf.Lerp(0.5f, 1f, waterBar.waterLevel);
         }
 
-        float adjustedMoveSpeed = moveSpeed * waterFactor;
-        float adjustedJumpVelocity = jumpVelocity * waterFactor;
+        // --- Ajustement selon le sable mouvant ---
+        float sandFactor = (pq != null && pq.InSand) ? sandSpeedMultiplier : 1f;
+
+        // Combine les deux effets multiplicativement
+        float totalSpeedMultiplier = waterFactor * sandFactor;
+
+        float adjustedMoveSpeed = moveSpeed * totalSpeedMultiplier;
+        float adjustedJumpVelocity = jumpVelocity * waterFactor; // eau affecte le saut, pas le sable
 
         float vx = rb.linearVelocity.x;
         float vy = rb.linearVelocity.y;
 
+        // --- Gestion du saut (coyote + buffer) ---
         if (jumpBufferTimer > 0f && coyoteTimer > 0f)
         {
             vy = adjustedJumpVelocity;
@@ -192,26 +259,27 @@ public class PlayerController2D : MonoBehaviour
             coyoteTimer = 0f;
         }
 
+        // --- Mouvement horizontal ---
         if (grounded)
         {
             vx = input.x * adjustedMoveSpeed;
         }
         else
         {
-            float target = input.x * airMax;
+            float target = input.x * airMax * totalSpeedMultiplier;
             float maxDelta = airAccel * Time.fixedDeltaTime;
             vx = Mathf.MoveTowards(vx, target, maxDelta);
         }
 
+        // --- Gravité ---
         if (vy > 0.01f)
             rb.gravityScale = jumpHeld ? gravityScaleUp : gravityScaleLowJump;
-        else if (vy < -0.01f)
-            rb.gravityScale = gravityScaleDown;
         else
             rb.gravityScale = gravityScaleDown;
 
         rb.linearVelocity = new Vector2(vx, vy);
     }
+
 
     bool IsGrounded()
     {
