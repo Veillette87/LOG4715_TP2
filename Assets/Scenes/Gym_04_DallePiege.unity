@@ -2794,27 +2794,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5914595248271761923}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1054321095 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7132125229939505460, guid: 76e885cca8ad748449491188ed613ac4,
-    type: 3}
-  m_PrefabInstance: {fileID: 5914595248271761923}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1054321101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1054321095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9cf74318a6b14510a82c2603531c284, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpKey: 32
-  jumpsNeeded: 5
-  escapeImpulse: 8
 --- !u!1 &1274446260
 GameObject:
   m_ObjectHideFlags: 0
@@ -7189,6 +7168,7 @@ MonoBehaviour:
     type: 3}
   shootPoint: {fileID: 186515776}
   shootSpeed: 10
+  resetTime: 2
 --- !u!61 &1838991339
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7541,11 +7521,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7132125229939505460, guid: 76e885cca8ad748449491188ed613ac4,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1054321101}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76e885cca8ad748449491188ed613ac4, type: 3}
 --- !u!1001 &7010612406508086827
 PrefabInstance:
