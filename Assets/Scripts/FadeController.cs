@@ -10,7 +10,13 @@ public class FadeController : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.root.gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void Start()
@@ -19,11 +25,23 @@ public class FadeController : MonoBehaviour
             fadePanel.color = new Color(0, 0, 0, 0);
     }
 
+    // Rechargement de la scène
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (fadePanel != null)
+        {
+            fadePanel.color = new Color(0, 0, 0, 1);
+            StartCoroutine(FadeIn());
+        }
+    }
+
     public IEnumerator FadeOutAndReload()
     {
-        if (fadePanel == null) yield break;
+        if (fadePanel == null)
+        {
+            yield break;
+        }
 
-        // 🔥 Fade vers le noir progressif
         float t = 0f;
         while (t < fadeDuration)
         {
@@ -34,12 +52,22 @@ public class FadeController : MonoBehaviour
         }
 
         fadePanel.color = new Color(0, 0, 0, 1);
-
-        // ✅ Important : on attend une frame pour afficher le noir
         yield return new WaitForEndOfFrame();
 
-        // 🔄 Rechargement de la scène actuelle
         Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadScene(current.buildIndex);
+    }
+
+    IEnumerator FadeIn()
+    {
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+            fadePanel.color = new Color(0, 0, 0, alpha);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        fadePanel.color = new Color(0, 0, 0, 0);
     }
 }

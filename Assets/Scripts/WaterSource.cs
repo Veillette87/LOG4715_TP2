@@ -9,7 +9,7 @@ public class WaterSource : MonoBehaviour
 
     public TMP_Text drinkPrompt;
 
-    private bool isRefilling = false; // pour éviter le spam et détecter quand on recharge
+    private bool isRefilling = false;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -23,7 +23,7 @@ public class WaterSource : MonoBehaviour
 
                 if (drinkPrompt != null)
                 {
-                    drinkPrompt.text = "Appuyez sur E pour boire";
+                    drinkPrompt.text = "Press [E] to refill";
                     drinkPrompt.gameObject.SetActive(true);
                 }
             }
@@ -51,13 +51,13 @@ public class WaterSource : MonoBehaviour
         if (playerWaterBar.waterLevel >= 1f)
         {
             if (drinkPrompt != null)
-                drinkPrompt.text = "Réservoir plein !";
+                drinkPrompt.text = "Full!";
             isRefilling = false;
 
             if (!Input.GetKey(KeyCode.E))
             {
                 if (drinkPrompt != null)
-                    drinkPrompt.text = "Appuyez sur E pour boire";
+                    drinkPrompt.text = "Press [E] to refill";
             }
 
             return;
@@ -68,7 +68,7 @@ public class WaterSource : MonoBehaviour
             isRefilling = true;
 
             if (drinkPrompt != null)
-                drinkPrompt.text = "Remplissage...";
+                drinkPrompt.text = "Refilling...";
 
             float refillRate = Time.deltaTime / refillDuration;
             playerWaterBar.waterLevel = Mathf.Clamp01(playerWaterBar.waterLevel + refillRate);
@@ -79,7 +79,7 @@ public class WaterSource : MonoBehaviour
                 isRefilling = false;
 
             if (drinkPrompt != null)
-                drinkPrompt.text = "Appuyez sur E pour boire";
+                drinkPrompt.text = "Press [E] to refill";
         }
     }
 }

@@ -45,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount, Vector2 hitDirection)
     {
-        // pas de dégâts si invincible ou déjà mort
+        // Pas de dégâts si invincible ou déjà mort
         if (isInvincible || isDead) return;
 
         currentHealth -= amount;
@@ -54,7 +54,7 @@ public class PlayerHealth : MonoBehaviour
 
         ApplyKnockback(hitDirection);
 
-        // 🔥 Animation de blessure
+        // Animation de blessure
         if (anim != null)
             anim.SetTrigger("IsHurt");
 
@@ -83,10 +83,39 @@ public class PlayerHealth : MonoBehaviour
     void UpdateHealthUI()
     {
         if (healthImages == null || healthImages.Length == 0) return;
+
         for (int i = 0; i < healthImages.Length; i++)
         {
-            healthImages[i].enabled = (i < currentHealth);
+            bool shouldBeVisible = (i < currentHealth);
+
+            if (!shouldBeVisible && healthImages[i].enabled)
+            {
+                StartCoroutine(BlinkAndHide(healthImages[i]));
+            }
+            else
+            {
+                healthImages[i].enabled = shouldBeVisible;
+            }
         }
+    }
+
+    IEnumerator BlinkAndHide(Image img)
+    {
+        float blinkDuration = 0.8f;
+        float elapsed = 0f;
+
+        Color original = img.color;
+        Color transparent = new Color(original.r, original.g, original.b, 0f);
+
+        while (elapsed < blinkDuration)
+        {
+            img.color = (elapsed % 0.2f < 0.05f) ? transparent : original;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        img.enabled = false;
+        img.color = original;
     }
 
     IEnumerator InvincibilityCoroutine()
@@ -97,7 +126,7 @@ public class PlayerHealth : MonoBehaviour
 
         while (elapsed < invincibilityTime)
         {
-            // effet de clignotement
+            // Effet de clignotement
             sr.color = new Color(1f, 0.5f, 0.5f, 0.7f);
             yield return new WaitForSeconds(0.1f);
             sr.color = originalColor;
@@ -114,7 +143,6 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         rb.linearVelocity = Vector2.zero;
 
-        // Désactiver le contrôle du joueur si possible
         if (controller != null)
         {
             controller.enabled = false;
@@ -127,50 +155,26 @@ public class PlayerHealth : MonoBehaviour
         StartCoroutine(HandleDeath());
     }
 
-    // IEnumerator HandleDeath()
-    // {
-    //     // Attend un peu pour laisser jouer l’animation de mort
-    //     yield return new WaitForSeconds(1.5f);
-
-    //     // Trouve le script FadeController dans la scène
-    //     FadeController fade = FindObjectOfType<FadeController>();
-    //     if (fade != null)
-    //     {
-    //         yield return fade.FadeOutAndReload();
-    //     }
-    //     else
-    //     {
-    //         // Si pas de fade, recharge directement
-    //         Scene current = SceneManager.GetActiveScene();
-    //         SceneManager.LoadScene(current.buildIndex);
-    //     }
-    // }
-
     IEnumerator HandleDeath()
     {
-        Debug.Log("⚰️ HandleDeath lancé"); // ✅ ajoute ceci en haut
+        // Attend un peu pour laisser jouer l’animation de mort
         yield return new WaitForSeconds(1.5f);
-        Debug.Log("🕒 Fin du délai, on cherche le fade");
 
+        // Trouve le script FadeController dans la scène
         FadeController fade = FindObjectOfType<FadeController>();
-        Debug.Log(fade != null ? "Fade trouvé" : "⚠️ Aucun FadeController trouvé !");
-        
         if (fade != null)
         {
-            Debug.Log("🎬 Lancement du fade");
             yield return fade.FadeOutAndReload();
-            Debug.Log("✅ Fin du fade");
         }
         else
         {
+            // Si pas de fade, recharge directement
             Scene current = SceneManager.GetActiveScene();
             SceneManager.LoadScene(current.buildIndex);
         }
     }
 
-
-    // --- DÉTECTION DES PICS ---
-
+    // Détection des pics
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Spikes"))
@@ -206,14 +210,14 @@ public class PlayerHealth : MonoBehaviour
     {
         while (true)
         {
-            // attendre tant qu’on est invincible ou mort
+            // Attendre tant qu’on est invincible ou mort
             while (isInvincible || isDead)
                 yield return null;
 
             Vector2 hitDir = (transform.position - spike.transform.position).normalized;
             TakeDamage(1, hitDir);
 
-            // attendre avant de pouvoir reprendre un dégât
+            // Attendre avant de pouvoir reprendre un dégât
             float t = 0f;
             while (t < damageInterval)
             {

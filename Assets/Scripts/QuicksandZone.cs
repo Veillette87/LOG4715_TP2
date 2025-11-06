@@ -73,8 +73,6 @@ public class QuicksandZone : MonoBehaviour
         var hv = rb.linearVelocity;
         hv.x = Mathf.Lerp(hv.x, 0f, horizontalDamp * Time.fixedDeltaTime);
         rb.linearVelocity = hv;
-
-
     }
 
 

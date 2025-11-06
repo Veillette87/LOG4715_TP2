@@ -91,7 +91,7 @@ public class ResizeCharacter : MonoBehaviour
         if (rb != null)
         {
             var v = rb.linearVelocity;
-            rb.linearVelocity = new Vector2(Mathf.Clamp(v.x, -_airMax0 * k, _airMax0 * k), v.y);
+            rb.linearVelocity = new Vector2(Mathf.Clamp(v.x, -_airMax0 * k, _airMax0 * k), 0f);
         }
 
         StopAllCoroutines();
