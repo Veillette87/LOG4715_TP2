@@ -13,6 +13,7 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] float moveSpeed = 8f;
     [SerializeField] float airAccel = 40f;
     [SerializeField] float airMax = 8f;
+
     [Header("Quicksand")]
     [Tooltip("Multiplier applied to horizontal speed when the player is in quicksand (0..1)")]
     [SerializeField] float sandSpeedMultiplier = 0.5f;
@@ -33,7 +34,7 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] float groundCheckInset = 0.02f;
 
     [Header("Barre d'eau")]
-    public WaterBarController waterBar;  // référence à ton script WaterBarController
+    public WaterBarController waterBar;
 
     [Header("Poussée d’objets")]
     public float pushDetectionDistance = 0.5f;
@@ -62,6 +63,10 @@ public class PlayerController2D : MonoBehaviour
     float gravityScaleDown;
     float gravityScaleLowJump;
 
+    // Orientation
+    float lastFacingDir = 1f; // 1 = droite, -1 = gauche
+    const float faceThreshold = 0.1f;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -80,7 +85,6 @@ public class PlayerController2D : MonoBehaviour
             UpdateGroundingAndCoyote();
             UpdateJumpBuffer();
             jumpHeld = false;
-            sr.flipX = false;
             anim.SetBool("IsWalking", false);
             return;
         }
@@ -141,11 +145,14 @@ public class PlayerController2D : MonoBehaviour
 
     void UpdateFacingAndAnim()
     {
-        bool walking = movementMode == MovementMode.Normal && Mathf.Abs(input.x) > 0.1f;
+        bool walking = movementMode == MovementMode.Normal && Mathf.Abs(input.x) > faceThreshold;
         anim.SetBool("IsWalking", walking);
         anim.SetBool("IsSwinging", movementMode == MovementMode.Grapple);
 
-        sr.flipX = input.x < 0f;
+        if (Mathf.Abs(input.x) > faceThreshold)
+            lastFacingDir = Mathf.Sign(input.x);
+
+        sr.flipX = lastFacingDir < 0f;
     }
 
     void UpdateJumpBuffer()
