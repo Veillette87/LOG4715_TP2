@@ -145,8 +145,7 @@ public class PlayerController2D : MonoBehaviour
         anim.SetBool("IsWalking", walking);
         anim.SetBool("IsSwinging", movementMode == MovementMode.Grapple);
 
-        if (walking)
-            sr.flipX = input.x < 0f;
+        sr.flipX = input.x < 0f;
     }
 
     void UpdateJumpBuffer()
@@ -158,13 +157,11 @@ public class PlayerController2D : MonoBehaviour
 
         jumpHeld = Input.GetButton("Jump");
 
-        // Détection de poussée
         DetectPushable();
     }
 
     void ApplyMovement()
     {
-        // Ajustement en fonction de la barre d'eau (endurance)
         float waterFactor = 1f;
         if (waterBar != null)
         {
@@ -172,19 +169,16 @@ public class PlayerController2D : MonoBehaviour
             waterFactor = Mathf.Lerp(0.5f, 1f, waterBar.waterLevel);
         }
 
-        // Sable mouvant
         float sandFactor = (pq != null && pq.InSand) ? sandSpeedMultiplier : 1f;
 
-        // Combine les deux effets
         float totalSpeedMultiplier = waterFactor * sandFactor;
 
         float adjustedMoveSpeed = moveSpeed * totalSpeedMultiplier;
-        float adjustedJumpVelocity = jumpVelocity * waterFactor; // eau affecte le saut, pas le sable
+        float adjustedJumpVelocity = jumpVelocity * waterFactor;
 
         float vx = rb.linearVelocity.x;
         float vy = rb.linearVelocity.y;
 
-        // Gestion du saut
         if (jumpBufferTimer > 0f && coyoteTimer > 0f)
         {
             vy = adjustedJumpVelocity;
@@ -192,7 +186,6 @@ public class PlayerController2D : MonoBehaviour
             coyoteTimer = 0f;
         }
 
-        // Mouvement horizontal
         if (grounded)
         {
             vx = input.x * adjustedMoveSpeed;
@@ -204,7 +197,6 @@ public class PlayerController2D : MonoBehaviour
             vx = Mathf.MoveTowards(vx, target, maxDelta);
         }
 
-        // Gravité
         if (vy > 0.01f)
             rb.gravityScale = jumpHeld ? gravityScaleUp : gravityScaleLowJump;
         else

@@ -25,7 +25,6 @@ public class FadeController : MonoBehaviour
             fadePanel.color = new Color(0, 0, 0, 0);
     }
 
-    // Rechargement de la scène
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (fadePanel != null)

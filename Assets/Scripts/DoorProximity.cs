@@ -30,13 +30,11 @@ public class DoorProximityByDistance : MonoBehaviour
         if (proximityUI && proximityUI.activeSelf != isInRange)
             proximityUI.SetActive(isInRange);
 
-        // Check for E key press when in range of the door
         if (isInRange && Input.GetKeyDown(KeyCode.E))
         {
             ShowEnigmeUI();
         }
 
-        //
         if (enigmeUI && enigmeUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
             HideEnigmeUI();
@@ -68,17 +66,11 @@ public class DoorProximityByDistance : MonoBehaviour
     {
         if (!player) return;
 
-        // Check 2D movement script
         var pm2 = player.GetComponent<PlayerController2D>() ?? player.GetComponentInChildren<PlayerController2D>();
         if (pm2 != null)
         {
             pm2.SetMovementEnabled(enabled);
             return;
         }
-
-
-
-
-
     }
 }

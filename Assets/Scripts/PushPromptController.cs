@@ -39,7 +39,6 @@ public class PushPromptController : MonoBehaviour
         float absX = Mathf.Abs(diff.x);
         float absY = Mathf.Abs(diff.y);
 
-        // Le joueur doit être à côté en X et aligné verticalement en Y
         bool isSideAligned = absY < alignTolerance;
         bool inHorizontalRange = absX < showDistance && absX > minDistance;
 

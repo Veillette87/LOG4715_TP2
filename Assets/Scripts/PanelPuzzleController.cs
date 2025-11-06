@@ -33,7 +33,6 @@ public class PanelPuzzleController : MonoBehaviour
             }
         }
 
-        // Subscribe to each slot's Button click to re-check puzzle state
         HookSlot(slot1);
         HookSlot(slot2);
         HookSlot(slot3);
@@ -45,7 +44,6 @@ public class PanelPuzzleController : MonoBehaviour
     {
         if (!slot) return;
 
-        // Listen to the SlotCycler's change event so Check() runs after the slot updates its index.
         slot.onValueChanged.AddListener(Check);
     }
 
@@ -68,14 +66,8 @@ public class PanelPuzzleController : MonoBehaviour
         var door = GameObject.FindGameObjectWithTag("Door");
         if (door)
         {
-
-
-
-
-            //  open the door 
             if (audioSource)
             {
-                Debug.Log("Panel puzzle solved! Opening the door.");
                 audioSource.time = 3f;
                 audioSource.Play();
             }

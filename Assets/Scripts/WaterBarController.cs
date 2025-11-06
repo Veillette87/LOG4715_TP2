@@ -4,8 +4,8 @@ using System.Collections;
 
 public class WaterBarController : MonoBehaviour
 {
-    public Image waterBarImage;  
-    public Sprite[] waterFrames;    
+    public Image waterBarImage;
+    public Sprite[] waterFrames;
     [Range(0.1f, 2f)]
     public float frameDelay = 1f;
 
@@ -29,7 +29,6 @@ public class WaterBarController : MonoBehaviour
             waterLevel -= 1f / (waterFrames.Length - 1);
             waterLevel = Mathf.Clamp01(waterLevel); // Empêche d’aller en dessous de 0
 
-            // Met à jour le sprite correspondant
             currentFrame = Mathf.RoundToInt((1f - waterLevel) * (waterFrames.Length - 1));
             currentFrame = Mathf.Clamp(currentFrame, 0, waterFrames.Length - 1);
 
