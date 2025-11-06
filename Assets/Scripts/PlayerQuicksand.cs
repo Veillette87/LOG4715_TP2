@@ -8,7 +8,8 @@ public class PlayerQuicksand : MonoBehaviour
     public float escapeImpulse = 8f;
 
     int jumps;
-    bool inSand;
+    // Expose whether the player is currently inside quicksand so movement can adapt
+    public bool InSand { get; private set; }
     Rigidbody2D rb;
     QuicksandZone currentZone;
 
@@ -26,13 +27,13 @@ public class PlayerQuicksand : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
 
-        Debug.Log("Player: OnTriggerEnter2D -> " + other.gameObject.name + " (has QuicksandZone: " + (other.GetComponent<QuicksandZone>() != null) + ")");
+
 
         var zone = other.GetComponent<QuicksandZone>();
         if (zone != null)
         {
             Debug.Log("Player: Entered quicksand zone: " + other.gameObject.name);
-            inSand = true;
+            InSand = true; // mark public flag
             jumps = 0;
             currentZone = zone;
         }
@@ -44,7 +45,7 @@ public class PlayerQuicksand : MonoBehaviour
         if (zone != null && zone == currentZone)
         {
             Debug.Log("Player: Exited quicksand zone: " + other.gameObject.name);
-            inSand = false;
+            InSand = false; // clear public flag
             jumps = 0;
             currentZone = null;
         }
@@ -52,7 +53,7 @@ public class PlayerQuicksand : MonoBehaviour
 
     void Update()
     {
-        if (!inSand) return;
+        if (!InSand) return;
 
         if (Input.GetKeyDown(jumpKey))
         {
@@ -74,7 +75,9 @@ public class PlayerQuicksand : MonoBehaviour
                 }
                 jumps = 0;
 
-                inSand = false;
+                InSand = false;
+                // inform the zone to temporarily stop affecting this Rigidbody so the player can escape
+                currentZone?.ReleaseBody(rb);
                 currentZone = null;
             }
         }

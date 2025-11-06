@@ -13,6 +13,9 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] float moveSpeed = 8f;
     [SerializeField] float airAccel = 40f;
     [SerializeField] float airMax = 8f;
+    [Header("Quicksand")]
+    [Tooltip("Multiplier applied to horizontal speed when the player is in quicksand (0..1)")]
+    [SerializeField] float sandSpeedMultiplier = 0.5f;
 
     [Header("Saut: cibles")]
     [SerializeField] float desiredJumpHeight = 3f;
@@ -35,6 +38,8 @@ public class PlayerController2D : MonoBehaviour
     BoxCollider2D box;
     SpriteRenderer sr;
     Animator anim;
+    // Reference to the PlayerQuicksand component so we can slow movement when in sand
+    PlayerQuicksand pq;
 
     Vector2 input;
     bool grounded;
@@ -60,6 +65,7 @@ public class PlayerController2D : MonoBehaviour
         box = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        pq = GetComponent<PlayerQuicksand>(); // may be null if the player doesn't have the component
         normalColliderSize = box.size;
         normalColliderOffset = box.offset;
         RecomputeJumpParameters();
@@ -157,6 +163,9 @@ public class PlayerController2D : MonoBehaviour
         float vx = rb.linearVelocity.x;
         float vy = rb.linearVelocity.y;
 
+        // Determine current speed multiplier depending on whether player is in sand
+        float speedMultiplier = (pq != null && pq.InSand) ? sandSpeedMultiplier : 1f;
+
         if (jumpBufferTimer > 0f && coyoteTimer > 0f)
         {
             vy = jumpVelocity;
@@ -166,11 +175,13 @@ public class PlayerController2D : MonoBehaviour
 
         if (grounded)
         {
-            vx = input.x * moveSpeed;
+            // Grounded movement uses full moveSpeed scaled by sand multiplier
+            vx = input.x * moveSpeed * speedMultiplier;
         }
         else
         {
-            float target = input.x * airMax;
+            // Air movement aims for airMax speed scaled by the same multiplier
+            float target = input.x * airMax * speedMultiplier;
             float maxDelta = airAccel * Time.fixedDeltaTime;
             vx = Mathf.MoveTowards(vx, target, maxDelta);
         }
