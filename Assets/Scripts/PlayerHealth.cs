@@ -177,7 +177,7 @@ public class PlayerHealth : MonoBehaviour
     // Détection des pics
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Spikes"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Quicksand"))
         {
             StartDamageOverTime(other);
         }
@@ -185,16 +185,16 @@ public class PlayerHealth : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Spikes"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Quicksand"))
         {
             StopDamageOverTime();
         }
     }
 
-    void StartDamageOverTime(Collider2D spike)
+    void StartDamageOverTime(Collider2D quicksand)
     {
         if (damageCoroutine == null)
-            damageCoroutine = StartCoroutine(DamageOverTime(spike));
+            damageCoroutine = StartCoroutine(DamageOverTime(quicksand));
     }
 
     void StopDamageOverTime()
@@ -206,7 +206,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    IEnumerator DamageOverTime(Collider2D spike)
+    IEnumerator DamageOverTime(Collider2D quicksand)
     {
         while (true)
         {
@@ -214,7 +214,7 @@ public class PlayerHealth : MonoBehaviour
             while (isInvincible || isDead)
                 yield return null;
 
-            Vector2 hitDir = (transform.position - spike.transform.position).normalized;
+            Vector2 hitDir = (transform.position - quicksand.transform.position).normalized;
             TakeDamage(1, hitDir);
 
             // Attendre avant de pouvoir reprendre un dégât

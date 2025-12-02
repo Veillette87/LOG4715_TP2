@@ -67,17 +67,9 @@ public class LevelManager : MonoBehaviour
 
     public void GameReset()
     {
-        StartCoroutine(ResetScene());
-    }
-
-    IEnumerator ResetScene()
-    {
-        yield return null;
-
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
-
-        yield return null;
+        Scene current = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(current.buildIndex);
+        BackToGame();
     }
 
     public void ShowControls()
