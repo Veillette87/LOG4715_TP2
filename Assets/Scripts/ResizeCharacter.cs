@@ -20,8 +20,6 @@ public class ResizeCharacter : MonoBehaviour
     [Header("Safety")]
     [SerializeField] LayerMask solidMask;
     [SerializeField] float ceilingCheckDistance = 1.3f;
-
-    public KeyCode toggleKey = KeyCode.LeftShift;
     public bool isTiny;
 
     Vector3 _scaleNormal;
@@ -65,7 +63,7 @@ public class ResizeCharacter : MonoBehaviour
 
     void Update()
     {
-        if (toggleKey != KeyCode.None && Input.GetKeyDown(toggleKey))
+        if (Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Shrink)))
             Toggle();
     }
 

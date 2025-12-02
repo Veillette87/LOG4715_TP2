@@ -136,12 +136,18 @@ public class PlayerController2D : MonoBehaviour
         gravityScaleLowJump = gravityScaleUp * Mathf.Max(1f, lowJumpMultiplier);
         jumpVelocity = gUp * timeToApex;
     }
-
     void ReadInput()
     {
-        input.x = Input.GetAxisRaw("Horizontal");
-        jumpHeld = Input.GetButton("Jump");
-        slideHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+        // Horizontal movement using MoveLeft / MoveRight keys
+        bool left = Input.GetKey(ControlsManager.GetKey(PlayerAction.MoveLeft));
+        bool right = Input.GetKey(ControlsManager.GetKey(PlayerAction.MoveRight));
+        input.x = (right ? 1f : 0f) - (left ? 1f : 0f);
+
+        // Jump
+        jumpHeld = Input.GetKey(ControlsManager.GetKey(PlayerAction.Jump));
+
+        // Slide
+        slideHeld = Input.GetKey(ControlsManager.GetKey(PlayerAction.Slide));
     }
 
     void UpdateGroundingAndCoyote()
@@ -164,12 +170,12 @@ public class PlayerController2D : MonoBehaviour
 
     void UpdateJumpBuffer()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Jump)))
             jumpBufferTimer = jumpBufferTime;
         else
             jumpBufferTimer = Mathf.Max(0f, jumpBufferTimer - Time.deltaTime);
 
-        jumpHeld = Input.GetButton("Jump");
+        jumpHeld = Input.GetKey(ControlsManager.GetKey(PlayerAction.Jump));
 
         DetectPushable();
     }

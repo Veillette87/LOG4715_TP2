@@ -54,7 +54,7 @@ public class WaterSource : MonoBehaviour
                 drinkPrompt.text = "Full!";
             isRefilling = false;
 
-            if (!Input.GetKey(KeyCode.E))
+            if (!Input.GetKey(ControlsManager.GetKey(PlayerAction.Interact)))
             {
                 if (drinkPrompt != null)
                     drinkPrompt.text = "Press [E] to refill";
@@ -63,7 +63,7 @@ public class WaterSource : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(ControlsManager.GetKey(PlayerAction.Interact)))
         {
             isRefilling = true;
 

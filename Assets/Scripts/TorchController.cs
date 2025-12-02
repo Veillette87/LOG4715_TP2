@@ -4,7 +4,6 @@ using UnityEngine.Rendering.Universal;
 public class TorchController : MonoBehaviour
 {
     [SerializeField] Light2D torchLight;
-    [SerializeField] KeyCode toggleKey = KeyCode.F;
     [SerializeField] bool hasTorch = true;
     Animator anim;
 
@@ -20,7 +19,7 @@ public class TorchController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(toggleKey))
+        if (Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Torch)))
         {
             hasTorch = !hasTorch;
             ApplyAll();

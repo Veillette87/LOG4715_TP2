@@ -12,8 +12,7 @@ public enum PlayerAction
     Shrink,
     Interact,
     Torch,
-    Grapple,
-    GrappleRelease
+    Grapple
 }
 
 public static class ControlsManager
@@ -34,7 +33,6 @@ public static class ControlsManager
         defaultBindings[PlayerAction.Interact] = KeyCode.E;
         defaultBindings[PlayerAction.Torch] = KeyCode.F;
         defaultBindings[PlayerAction.Grapple] = KeyCode.Mouse0;
-        defaultBindings[PlayerAction.GrappleRelease] = KeyCode.Mouse1;
 
         foreach (var kv in defaultBindings)
             keyBindings[kv.Key] = kv.Value;

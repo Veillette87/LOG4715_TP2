@@ -53,7 +53,7 @@ public class PlayerQuicksand : MonoBehaviour
     {
         if (!InSand) return;
 
-        if (Input.GetKeyDown(jumpKey))
+        if (Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Jump)))
         {
             jumps++;
             Debug.Log("Player: quicksand jump press " + jumps + "/" + jumpsNeeded);

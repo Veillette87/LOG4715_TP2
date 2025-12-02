@@ -30,7 +30,7 @@ public class DoorProximityByDistance : MonoBehaviour
         if (proximityUI && proximityUI.activeSelf != isInRange)
             proximityUI.SetActive(isInRange);
 
-        if (isInRange && Input.GetKeyDown(KeyCode.E))
+        if (isInRange && Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Interact)))
         {
             ShowEnigmeUI();
         }
