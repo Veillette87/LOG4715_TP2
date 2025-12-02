@@ -45,9 +45,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        GameMenu.SetActive(false);
-        baseMenu.SetActive(false);
-        controlMenu.SetActive(false);
+        BackToGame();
 
         foreach (var ab in buttons)
         {
