@@ -4,8 +4,6 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
 {
     [SerializeField] LayerMask grappleMask;
     [SerializeField] float maxGrappleDistance = 8f;
-    [SerializeField] KeyCode fireKey = KeyCode.Mouse0;
-    [SerializeField] string releaseButton = "Jump";
     [SerializeField] LineRenderer rope;
     [SerializeField] float swingForce = 25f;
     [SerializeField] float radialDamp = 0.2f;
@@ -44,7 +42,7 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
         {
             UpdateAimPreview();
 
-            if (Input.GetKeyDown(fireKey))
+            if (Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Grapple)))
             {
                 Vector2 aimDir = GetAimDirection();
                 Vector2 origin = transform.position;
@@ -58,7 +56,7 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
             }
         }
 
-        if (active && Input.GetButtonDown(releaseButton) && !GlobalSettings.Instance.IsUIVisible)
+        if (active && Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Jump)) && !GlobalSettings.Instance.IsUIVisible)
         {
             Release();
         }
@@ -146,7 +144,9 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
     public bool Apply(ref Rigidbody2D rigidbodyRef)
     {
         joint.distance = Mathf.Min(joint.distance, maxGrappleDistance);
-        float reel = Input.GetAxisRaw("Vertical");
+        float reel = 0f;
+        if (Input.GetKey(ControlsManager.GetKey(PlayerAction.ReelUp))) reel += 1f;
+        if (Input.GetKey(ControlsManager.GetKey(PlayerAction.ReelDown))) reel -= 1f;
 
         if (reel < 0f && joint.distance >= maxGrappleDistance)
             reel = 0f;
@@ -164,7 +164,10 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
                 Vector2 dir = toAnchor.normalized;
                 Vector2 tangent = new Vector2(dir.y, -dir.x);
 
-                float h = Input.GetAxisRaw("Horizontal");
+                float h = 0f;
+                if (Input.GetKey(ControlsManager.GetKey(PlayerAction.MoveRight))) h += 1f;
+                if (Input.GetKey(ControlsManager.GetKey(PlayerAction.MoveLeft))) h -= 1f;
+
                 if (Mathf.Abs(h) > 0.01f)
                 {
                     rb.AddForce(tangent * h * swingForce, ForceMode2D.Force);
