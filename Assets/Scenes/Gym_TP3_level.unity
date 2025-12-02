@@ -1304,7 +1304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &538402338
 Transform:
   m_ObjectHideFlags: 0
@@ -5859,8 +5859,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00a0ef57adb5b6141a16b0395e76a735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightsObject: {fileID: 1648637701}
   masterVolume: 1
   IsUIVisible: 0
+  IsLightsOn: 1
 --- !u!114 &743080298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6555,7 +6557,7 @@ PrefabInstance:
     - target: {fileID: 3707990792500314712, guid: 76e885cca8ad748449491188ed613ac4,
         type: 3}
       propertyPath: groundLayer.m_Bits
-      value: 768
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 3707990792500314712, guid: 76e885cca8ad748449491188ed613ac4,
         type: 3}
@@ -9596,7 +9598,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 7.541878
+      m_AnimationSpeed: 7.550541
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 7, y: -2, z: 0}
@@ -9609,7 +9611,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.260947
+      m_AnimationSpeed: 7.758023
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 8, y: -2, z: 0}
@@ -9622,7 +9624,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.6004825
+      m_AnimationSpeed: 7.3933744
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 9, y: -2, z: 0}
@@ -9635,7 +9637,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.8109846
+      m_AnimationSpeed: 7.9396105
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -10298,7 +10300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1648637702
 MonoBehaviour:
   m_ObjectHideFlags: 0

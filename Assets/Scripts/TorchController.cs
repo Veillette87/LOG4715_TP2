@@ -25,11 +25,18 @@ public class TorchController : MonoBehaviour
             hasTorch = !hasTorch;
             ApplyAll();
         }
+        if (hasTorch && !GlobalSettings.Instance.IsLightsOn)
+        {
+            torchLight.enabled = true;
+        }
+        else
+        {
+            torchLight.enabled = false;
+        }
     }
 
     void ApplyAll()
     {
         if (anim) anim.SetBool("HasTorch", hasTorch);
-        if (torchLight) torchLight.enabled = hasTorch;
     }
 }

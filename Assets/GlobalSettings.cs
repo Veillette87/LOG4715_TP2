@@ -4,10 +4,13 @@ public class GlobalSettings : MonoBehaviour
 {
     public static GlobalSettings Instance;
 
+    public GameObject lightsObject;
+
     // Add any variables you want here
     public float masterVolume = 1.0f;
 
     public bool IsUIVisible = false;
+    public bool IsLightsOn = true;
 
     void Awake()
     {
@@ -20,10 +23,25 @@ public class GlobalSettings : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes
+        lightsObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SetLightsState(!IsLightsOn);
+        }
     }
 
     public void SetUIVisibility(bool isVisible)
     {
         IsUIVisible = isVisible;
+    }
+
+    public void SetLightsState(bool isOn)
+    {
+        IsLightsOn = isOn;
+        lightsObject.SetActive(!isOn);
     }
 }
