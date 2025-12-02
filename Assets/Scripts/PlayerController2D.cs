@@ -66,8 +66,6 @@ public class PlayerController2D : MonoBehaviour
     // Slide
     bool isSliding = false;
     bool slideHeld;
-    Vector2 normalColliderSize;
-    Vector2 normalColliderOffset;
 
     // Orientation
     float lastFacingDir = 1f; // 1 = droite, -1 = gauche
@@ -80,8 +78,6 @@ public class PlayerController2D : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         pq = GetComponent<PlayerQuicksand>(); // may be null if the player doesn't have the component
-        normalColliderSize = box.size;
-        normalColliderOffset = box.offset;
         RecomputeJumpParameters();
     }
 
@@ -274,15 +270,20 @@ public class PlayerController2D : MonoBehaviour
         if (HasCeilingAbove())
             return;
         isSliding = false;
-        box.size = normalColliderSize;
-        box.offset = normalColliderOffset;
+
+        float oldHeight = box.size.y;
+        float newHeight = oldHeight * 2f;
+        float heightDiff = newHeight - oldHeight;
+
+        box.size = new Vector2(box.size.x, newHeight);
+        box.offset = new Vector2(box.offset.x, box.offset.y + heightDiff / 2f);
         anim.SetBool("IsSliding", isSliding);
     }
 
     bool HasCeilingAbove()
     {
-        Vector2 cliffCenter = (Vector2)transform.position + normalColliderOffset;
-        Vector2 size = normalColliderSize;
+        Vector2 cliffCenter = (Vector2)transform.position + box.offset;
+        Vector2 size = box.size;
         size -= new Vector2(0.01f, 0.01f);
         RaycastHit2D hit = Physics2D.BoxCast(cliffCenter, size, 0f, Vector2.up, 0f, groundLayer);
         return hit.collider != null;
