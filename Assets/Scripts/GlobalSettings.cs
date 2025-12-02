@@ -22,7 +22,6 @@ public class GlobalSettings : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // Persist across scenes
         lightsObject.SetActive(false);
     }
 

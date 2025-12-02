@@ -1,16 +1,15 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-
-public class MenuManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
+    public GameObject GameMenu;
     public GameObject baseMenu;
     public GameObject controlMenu;
 
-    public Transform contentParent; // assign "Content" from ScrollView
+    public Transform contentParent;
 
     [System.Serializable]
     public class ActionButton
@@ -25,9 +24,29 @@ public class MenuManager : MonoBehaviour
     private bool waitingForKey = false;
     private PlayerAction currentAction;
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GlobalSettings.Instance.IsUIVisible)
+            {
+                BackToGame();
+            }
+            else
+            {
+                GameMenu.SetActive(true);
+                baseMenu.SetActive(true);
+                controlMenu.SetActive(false);
+                Time.timeScale = 0f;
+                GlobalSettings.Instance.SetUIVisibility(true);
+            }
+        }
+    }
+
     void Start()
     {
-        baseMenu.SetActive(true);
+        GameMenu.SetActive(false);
+        baseMenu.SetActive(false);
         controlMenu.SetActive(false);
 
         foreach (var ab in buttons)
@@ -37,10 +56,28 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void GameStart()
+    public void BackToGame()
     {
-        string sceneName = "Gym_TP3_level";
-        SceneManager.LoadScene(sceneName);
+        GameMenu.SetActive(false);
+        baseMenu.SetActive(false);
+        controlMenu.SetActive(false);
+        Time.timeScale = 1f;
+        GlobalSettings.Instance.SetUIVisibility(false);
+    }
+
+    public void GameReset()
+    {
+        StartCoroutine(ResetScene());
+    }
+
+    IEnumerator ResetScene()
+    {
+        yield return null;
+
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+
+        yield return null;
     }
 
     public void ShowControls()
@@ -51,7 +88,8 @@ public class MenuManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        string sceneName = "MenuScene";
+        SceneManager.LoadScene(sceneName);
     }
 
     public void BackButton()
