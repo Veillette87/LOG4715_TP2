@@ -7,16 +7,28 @@ public class FadeController : MonoBehaviour
 {
     public Image fadePanel;
     public float fadeDuration = 1f;
+    public static FadeController Instance;
 
     void Awake()
     {
-        DontDestroyOnLoad(transform.root.gameObject);
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
 
     void Start()
@@ -55,6 +67,7 @@ public class FadeController : MonoBehaviour
 
         Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadScene(current.buildIndex);
+
     }
 
     IEnumerator FadeIn()

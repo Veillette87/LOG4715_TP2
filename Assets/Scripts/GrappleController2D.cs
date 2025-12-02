@@ -40,7 +40,7 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
 
     void Update()
     {
-        if (!active)
+        if (!active && !GlobalSettings.Instance.IsUIVisible)
         {
             UpdateAimPreview();
 
@@ -58,12 +58,12 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
             }
         }
 
-        if (active && Input.GetButtonDown(releaseButton))
+        if (active && Input.GetButtonDown(releaseButton) && !GlobalSettings.Instance.IsUIVisible)
         {
             Release();
         }
 
-        if (rope != null)
+        if (rope != null && !GlobalSettings.Instance.IsUIVisible)
         {
             if (active)
             {

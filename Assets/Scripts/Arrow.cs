@@ -13,6 +13,14 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+
+            PlayerHealth player = collision.collider.GetComponent<PlayerHealth>();
+            if (player != null)
+            {
+                Vector2 hitDir = (collision.transform.position - transform.position).normalized;
+
+                player.TakeDamage(1, hitDir);
+            }
             Destroy(gameObject);
         }
     }

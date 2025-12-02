@@ -161,7 +161,7 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         // Trouve le script FadeController dans la scène
-        FadeController fade = FindObjectOfType<FadeController>();
+        FadeController fade = FadeController.Instance;
         if (fade != null)
         {
             yield return fade.FadeOutAndReload();

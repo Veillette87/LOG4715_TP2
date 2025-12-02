@@ -16,9 +16,17 @@ public class PressurePlateObject : MonoBehaviour
     public float shootSpeed = 10f;
     public float resetTime = 2f;
 
+    private float boxColliderOffsetPressedY = -0.35f;
+    private float boxColliderOffsetReadyY = -0.3f;
+    private float boxColliderSizePressedY = 0.3f;
+    private float boxColliderSizeReadyY = 0.4f;
+
+    private BoxCollider2D boxCollider;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
         spriteRenderer.sprite = idleSprite;
     }
 
@@ -28,6 +36,23 @@ public class PressurePlateObject : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             spriteRenderer.sprite = activatedSprite;
+            boxCollider.offset = new Vector2(boxCollider.offset.x, boxColliderOffsetPressedY);
+            boxCollider.size = new Vector2(boxCollider.size.x, boxColliderSizePressedY);
+            activated = true;
+
+            ShootArrow();
+            StartCoroutine(ResetPlate());
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (activated) return;
+        if (other.CompareTag("Player"))
+        {
+            spriteRenderer.sprite = activatedSprite;
+            boxCollider.offset = new Vector2(boxCollider.offset.x, boxColliderOffsetPressedY);
+            boxCollider.size = new Vector2(boxCollider.size.x, boxColliderSizePressedY);
             activated = true;
 
             ShootArrow();
@@ -56,6 +81,8 @@ public class PressurePlateObject : MonoBehaviour
     {
         yield return new WaitForSeconds(resetTime);
         spriteRenderer.sprite = idleSprite;
+        boxCollider.offset = new Vector2(boxCollider.offset.x, boxColliderOffsetReadyY);
+        boxCollider.size = new Vector2(boxCollider.size.x, boxColliderSizeReadyY);
         activated = false;
     }
 

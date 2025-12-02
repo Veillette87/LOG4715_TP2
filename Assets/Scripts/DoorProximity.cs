@@ -46,6 +46,7 @@ public class DoorProximityByDistance : MonoBehaviour
         if (enigmeUI)
         {
             enigmeUI.SetActive(true);
+            GlobalSettings.Instance.SetUIVisibility(true);
             SetPlayerMovementEnabled(false);
 
         }
@@ -57,6 +58,7 @@ public class DoorProximityByDistance : MonoBehaviour
         if (enigmeUI)
         {
             enigmeUI.SetActive(false);
+            GlobalSettings.Instance.SetUIVisibility(false);
             SetPlayerMovementEnabled(true);
         }
     }
