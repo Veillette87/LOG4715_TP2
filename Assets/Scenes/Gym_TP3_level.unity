@@ -6305,7 +6305,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1648637703}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &743080297
@@ -7086,8 +7087,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxGrappleDistance: 8
-  fireKey: 323
-  releaseButton: Jump
   rope: {fileID: 868935018}
   swingForce: 20
   radialDamp: 0.2
@@ -7164,7 +7163,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   ceilingCheckDistance: 1.3
-  toggleKey: 304
   isTiny: 0
 --- !u!114 &1267447594
 MonoBehaviour:
@@ -7179,7 +7177,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torchLight: {fileID: 538402339}
-  toggleKey: 102
   hasTorch: 1
 --- !u!1 &1272779959
 GameObject:
@@ -9977,7 +9974,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.9903965
+      m_AnimationSpeed: 6.2309246
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 7, y: -2, z: 0}
@@ -9990,7 +9987,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.0233107
+      m_AnimationSpeed: 7.4688234
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 8, y: -2, z: 0}
@@ -10003,7 +10000,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 7.3634453
+      m_AnimationSpeed: 7.036571
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 9, y: -2, z: 0}
@@ -10016,7 +10013,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 7.173168
+      m_AnimationSpeed: 7.104853
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -10593,12 +10590,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648637701}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.6294529, y: 1.4401158, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 743080296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1666553319
 GameObject:
@@ -11708,5 +11705,4 @@ SceneRoots:
   - {fileID: 584840007}
   - {fileID: 596488108}
   - {fileID: 150908179}
-  - {fileID: 1648637703}
   - {fileID: 788480399}
