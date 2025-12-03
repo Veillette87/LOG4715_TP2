@@ -7,7 +7,7 @@ public class WaterBarController : MonoBehaviour
     public Image waterBarImage;
     public Sprite[] waterFrames;
     [Range(0.1f, 5f)]
-    public float frameDelay = 2f;
+    public float frameDelay = 3f;
 
     [HideInInspector]
     public float waterLevel = 1f; // 1 = plein, 0 = vide
