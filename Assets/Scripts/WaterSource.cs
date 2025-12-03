@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class WaterSource : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class WaterSource : MonoBehaviour
     private WaterBarController playerWaterBar;
 
     public TMP_Text drinkPrompt;
+    public Image keyImageDefault;
+    public Image keyImageInteract;
 
     private bool isRefilling = false;
 
@@ -23,9 +26,13 @@ public class WaterSource : MonoBehaviour
 
                 if (drinkPrompt != null)
                 {
-                    drinkPrompt.text = "Press [E] to refill";
+                    drinkPrompt.text = "Press [  ] to refill";
                     drinkPrompt.gameObject.SetActive(true);
                 }
+                if (keyImageDefault != null)
+                    keyImageDefault.gameObject.SetActive(false);
+                if (keyImageInteract != null)
+                    keyImageInteract.gameObject.SetActive(true);
             }
         }
     }
@@ -40,6 +47,10 @@ public class WaterSource : MonoBehaviour
 
             if (drinkPrompt != null)
                 drinkPrompt.gameObject.SetActive(false);
+            if (keyImageDefault != null)
+                keyImageDefault.gameObject.SetActive(false);
+            if (keyImageInteract != null)
+                keyImageInteract.gameObject.SetActive(false);
         }
     }
 
@@ -57,7 +68,11 @@ public class WaterSource : MonoBehaviour
             if (!Input.GetKey(ControlsManager.GetKey(PlayerAction.Interact)))
             {
                 if (drinkPrompt != null)
-                    drinkPrompt.text = "Press [E] to refill";
+                    drinkPrompt.text = "Press [  ] to refill";
+                if (keyImageDefault != null)
+                    keyImageDefault.gameObject.SetActive(false);
+                if (keyImageInteract != null)
+                    keyImageInteract.gameObject.SetActive(true);
             }
 
             return;
@@ -69,6 +84,8 @@ public class WaterSource : MonoBehaviour
 
             if (drinkPrompt != null)
                 drinkPrompt.text = "Refilling...";
+            if (keyImageInteract != null)
+                keyImageInteract.gameObject.SetActive(false);
 
             float refillRate = Time.deltaTime / refillDuration;
             playerWaterBar.waterLevel = Mathf.Clamp01(playerWaterBar.waterLevel + refillRate);
@@ -79,7 +96,11 @@ public class WaterSource : MonoBehaviour
                 isRefilling = false;
 
             if (drinkPrompt != null)
-                drinkPrompt.text = "Press [E] to refill";
+                drinkPrompt.text = "Press [  ] to refill";
+            if (keyImageDefault != null)
+                keyImageDefault.gameObject.SetActive(false);
+            if (keyImageInteract != null)
+                keyImageInteract.gameObject.SetActive(true);
         }
     }
 }
