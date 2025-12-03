@@ -40,6 +40,11 @@ public class PlayerController2D : MonoBehaviour
     public float pushDetectionDistance = 0.5f;
     public LayerMask pushableLayer;
 
+    [Header("Sons")]
+    public AudioSource walkSource;
+    public AudioClip walkClip;
+    public AudioClip sandWalkClip;
+
     // Physique et états
     MovementMode movementMode = MovementMode.Normal;
     IExternalKinematics ext;
@@ -161,6 +166,24 @@ public class PlayerController2D : MonoBehaviour
         bool walking = movementMode == MovementMode.Normal && Mathf.Abs(input.x) > faceThreshold;
         anim.SetBool("IsWalking", walking);
         anim.SetBool("IsSwinging", movementMode == MovementMode.Grapple);
+
+        if (walking && !walkSource.isPlaying && grounded && pq.InSand)
+        {
+            walkSource.pitch = 1f;
+            walkSource.clip = sandWalkClip;
+            walkSource.Play();
+        }
+        else if (walking && !walkSource.isPlaying && grounded)
+        {
+            walkSource.pitch = 1f + Mathf.Abs(input.x) * 0.3f;
+            walkSource.clip = walkClip;
+            walkSource.Play();
+        }
+
+        if ((!walking || !grounded) && walkSource.isPlaying)
+        {
+            walkSource.Stop();
+        }
 
         if (Mathf.Abs(input.x) > faceThreshold)
             lastFacingDir = Mathf.Sign(input.x);

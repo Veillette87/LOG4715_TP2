@@ -11,6 +11,7 @@ public class GlobalSettings : MonoBehaviour
 
     public bool IsUIVisible = false;
     public bool IsLightsOn = true;
+    public AudioSource arrowSource;
 
     void Awake()
     {
@@ -42,5 +43,13 @@ public class GlobalSettings : MonoBehaviour
     {
         IsLightsOn = isOn;
         lightsObject.SetActive(!isOn);
+    }
+
+    public void PlayArrowSound()
+    {
+        if (arrowSource != null)
+        {
+            arrowSource.Play();
+        }
     }
 }

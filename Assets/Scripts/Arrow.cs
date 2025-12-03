@@ -4,6 +4,10 @@ public class Arrow : MonoBehaviour
 {
     public float lifetime = 10f;
 
+    public AudioSource arrowSource;
+    public AudioClip hitWallClip;
+    public AudioClip hitPlayerClip;
+
     private void Start()
     {
         Destroy(gameObject, lifetime);
@@ -13,7 +17,7 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-
+            GlobalSettings.Instance.PlayArrowSound();
             PlayerHealth player = collision.collider.GetComponent<PlayerHealth>();
             if (player != null)
             {
@@ -23,5 +27,6 @@ public class Arrow : MonoBehaviour
             }
             Destroy(gameObject);
         }
+        arrowSource.PlayOneShot(hitWallClip);
     }
 }
