@@ -11,12 +11,10 @@ public class PressurePlateObject : MonoBehaviour
     private bool activated = false;
 
     [Header("Arrow Settings")]
-    public GameObject arrowPrefab;     
-    public Transform shootPoint;       
+    public GameObject arrowPrefab;
+    public Transform[] shootPoints;
     public float shootSpeed = 10f;
-    public float resetTime = 2f;
-
-    private float boxColliderOffsetPressedY = -0.35f;
+    public float resetTime = 2f; private float boxColliderOffsetPressedY = -0.35f;
     private float boxColliderOffsetReadyY = -0.3f;
     private float boxColliderSizePressedY = 0.3f;
     private float boxColliderSizeReadyY = 0.4f;
@@ -62,17 +60,23 @@ public class PressurePlateObject : MonoBehaviour
 
     private void ShootArrow()
     {
-        if (arrowPrefab != null && shootPoint != null)
+        if (arrowPrefab != null && shootPoints != null && shootPoints.Length > 0)
         {
-            GameObject arrow = Instantiate(arrowPrefab, shootPoint.position, shootPoint.rotation);
-            Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            foreach (Transform shootPoint in shootPoints)
             {
-                Vector2 direction = -shootPoint.right;
-                rb.linearVelocity = direction * shootSpeed;
+                if (shootPoint != null)
+                {
+                    GameObject arrow = Instantiate(arrowPrefab, shootPoint.position, shootPoint.rotation);
+                    Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
+                    if (rb != null)
+                    {
+                        Vector2 direction = -shootPoint.right;
+                        rb.linearVelocity = direction * shootSpeed;
 
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+                    }
+                }
             }
         }
     }
