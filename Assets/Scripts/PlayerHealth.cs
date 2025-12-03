@@ -23,6 +23,10 @@ public class PlayerHealth : MonoBehaviour
     [Header("Dégâts continus")]
     public float damageInterval = 1f; // temps entre deux dégâts si on reste sur un pic
 
+    [Header("Sons")]
+    public AudioClip deathSoundClip;
+    public AudioClip damageSoundClip;
+    public AudioSource damageSound;
     private SpriteRenderer sr;
     private Rigidbody2D rb;
     private PlayerController2D controller;
@@ -56,8 +60,10 @@ public class PlayerHealth : MonoBehaviour
 
         // Animation de blessure
         if (anim != null)
+        {
             anim.SetTrigger("IsHurt");
-
+        }
+            
         if (currentHealth <= 0)
         {
             Die();
@@ -66,7 +72,7 @@ public class PlayerHealth : MonoBehaviour
         {
             if (invincibilityCoroutine != null)
                 StopCoroutine(invincibilityCoroutine);
-
+            damageSound.PlayOneShot(damageSoundClip);
             invincibilityCoroutine = StartCoroutine(InvincibilityCoroutine());
         }
     }
@@ -151,6 +157,8 @@ public class PlayerHealth : MonoBehaviour
         // Animation de mort
         if (anim != null)
             anim.SetBool("IsDead", true);
+
+        damageSound.PlayOneShot(deathSoundClip);
 
         StartCoroutine(HandleDeath());
     }

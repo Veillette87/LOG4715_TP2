@@ -8287,7 +8287,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 8da64f773e634e6478c0a086c79335d8, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -8824,8 +8824,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1136464133}
   m_HandleRect: {fileID: 1136464132}
   m_Direction: 2
-  m_Value: 0.00000030517575
-  m_Size: 0.59999996
+  m_Value: -0.00000015258789
+  m_Size: 0.5997773
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11028,6 +11028,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1267447594}
+    - targetCorrespondingSourceObject: {fileID: 7132125229939505460, guid: 76e885cca8ad748449491188ed613ac4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1267447598}
   m_SourcePrefab: {fileID: 100100000, guid: 76e885cca8ad748449491188ed613ac4, type: 3}
 --- !u!1 &1267447581 stripped
 GameObject:
@@ -11120,6 +11124,9 @@ MonoBehaviour:
   knockbackForceX: 5
   knockbackForceY: 6
   damageInterval: 1
+  deathSoundClip: {fileID: 8300000, guid: 716458f2f0f8aff4aa3e701f65cd66aa, type: 3}
+  damageSoundClip: {fileID: 8300000, guid: 837e837b98d471b41be362047c13c88b, type: 3}
+  damageSound: {fileID: 1267447598}
 --- !u!114 &1267447593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11157,6 +11164,103 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   torchLight: {fileID: 538402339}
   hasTorch: 1
+--- !u!82 &1267447598
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267447581}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 837e837b98d471b41be362047c13c88b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.25
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1272779959
 GameObject:
   m_ObjectHideFlags: 0
@@ -14089,7 +14193,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 7.8605375
+      m_AnimationSpeed: 7.7913527
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 7, y: -2, z: 0}
@@ -14102,7 +14206,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.4393578
+      m_AnimationSpeed: 6.877824
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 8, y: -2, z: 0}
@@ -14115,7 +14219,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.3025455
+      m_AnimationSpeed: 6.9368443
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 9, y: -2, z: 0}
@@ -14128,7 +14232,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 7.301876
+      m_AnimationSpeed: 6.263022
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -17031,7 +17135,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 199.9999}
+  m_AnchoredPosition: {x: 0, y: 199.99998}
   m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2033331128
