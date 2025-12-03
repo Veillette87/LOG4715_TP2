@@ -8,6 +8,7 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
     [SerializeField] float swingForce = 25f;
     [SerializeField] float radialDamp = 0.2f;
     [SerializeField] float pullForce = 40f;
+    [SerializeField] bool grappleEnabled = true;
 
     [Header("Grapple Aim UI")]
     [SerializeField] LineRenderer aimLine;
@@ -40,6 +41,26 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
 
     void Update()
     {
+        // Toggle du grappin (click droit)
+        if (Input.GetMouseButtonDown(1)) // bouton droit de la souris
+        {
+            if (active)
+            {
+                Debug.Log("Cannot disable grapple while swinging.");
+                return;
+            }
+            grappleEnabled = !grappleEnabled;
+            Debug.Log("Grapple toggled: " + grappleEnabled);
+        }
+
+        // Si désactivé -> ne rien faire
+        if (!grappleEnabled)
+        {
+            if (aimLine != null) aimLine.enabled = false;
+            if (reticle != null) reticle.gameObject.SetActive(false);
+            return;
+        }
+
         if (!active && !GlobalSettings.Instance.IsUIVisible)
         {
             UpdateAimPreview();
