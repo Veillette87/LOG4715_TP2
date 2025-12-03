@@ -15,6 +15,8 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
     [SerializeField] Color inRangeColor = Color.green;
     [SerializeField] Color outOfRangeColor = Color.red;
 
+    public AudioClip jumpSoundClip;
+
     Rigidbody2D rb;
     PlayerController2D motor;
     DistanceJoint2D joint;
@@ -137,6 +139,7 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
         active = false;
         motor.ReleaseTakeover();
 
+        AudioManager.Instance.PlaySoundClip(jumpSoundClip, 0.5f);
         if (aimLine != null) aimLine.enabled = true;
         if (reticle != null) reticle.gameObject.SetActive(true);
     }
