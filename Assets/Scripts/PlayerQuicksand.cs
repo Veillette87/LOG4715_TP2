@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerQuicksand : MonoBehaviour
 {
     public KeyCode jumpKey = KeyCode.Space;
-    public int jumpsNeeded = 5;
+    public int jumpsNeeded = 2;
     public float escapeImpulse = 15f;
 
     int jumps;
