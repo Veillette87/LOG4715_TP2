@@ -17,7 +17,7 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            GlobalSettings.Instance.PlayArrowSound();
+            AudioManager.Instance.PlaySoundClip(hitPlayerClip);
             PlayerHealth player = collision.collider.GetComponent<PlayerHealth>();
             if (player != null)
             {

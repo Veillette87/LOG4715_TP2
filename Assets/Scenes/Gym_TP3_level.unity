@@ -8234,6 +8234,7 @@ GameObject:
   - component: {fileID: 743080296}
   - component: {fileID: 743080297}
   - component: {fileID: 743080299}
+  - component: {fileID: 743080302}
   - component: {fileID: 743080298}
   - component: {fileID: 743080300}
   - component: {fileID: 743080301}
@@ -8276,7 +8277,6 @@ MonoBehaviour:
   masterVolume: 1
   IsUIVisible: 0
   IsLightsOn: 1
-  arrowSource: {fileID: 743080301}
 --- !u!82 &743080298
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8435,13 +8435,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bc7c17203517095459b41bb4d335d34b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 130
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -8616,6 +8616,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &743080302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743080295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23ff406ac6d3f347a7a134687e2a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generalSource: {fileID: 743080301}
 --- !u!1 &752850388
 GameObject:
   m_ObjectHideFlags: 0
@@ -8923,7 +8936,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1136464133}
   m_HandleRect: {fileID: 1136464132}
   m_Direction: 2
-  m_Value: 0.00000030517575
+  m_Value: -0.0000009155272
   m_Size: 0.59999996
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11084,6 +11097,11 @@ PrefabInstance:
       propertyPath: sandWalkClip
       value: 
       objectReference: {fileID: 8300000, guid: 9f928d13ca8799d4d9d4c7f35282b38d, type: 3}
+    - target: {fileID: 3707990792500314712, guid: 76e885cca8ad748449491188ed613ac4,
+        type: 3}
+      propertyPath: jumpSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c2c33ea9306343344a62b27045bc19a3, type: 3}
     - target: {fileID: 3707990792500314712, guid: 76e885cca8ad748449491188ed613ac4,
         type: 3}
       propertyPath: groundLayer.m_Bits
@@ -14408,7 +14426,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.4279704
+      m_AnimationSpeed: 6.1531563
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 7, y: -2, z: 0}
@@ -14421,7 +14439,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 7.768489
+      m_AnimationSpeed: 6.178742
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 8, y: -2, z: 0}
@@ -14434,7 +14452,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.272727
+      m_AnimationSpeed: 7.8457074
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 9, y: -2, z: 0}
@@ -14447,7 +14465,7 @@ Tilemap:
       - {fileID: 21300000, guid: 5ae5b7d208c6b46e9a5826f8c482f77f, type: 3}
       - {fileID: 21300000, guid: 10893ffacab7f4a0cbeab7b50473ff7c, type: 3}
       - {fileID: 21300000, guid: 3e1b413cb4005475db30b1ef21d4f315, type: 3}
-      m_AnimationSpeed: 6.6899366
+      m_AnimationSpeed: 6.991258
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -17350,7 +17368,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 199.99988}
+  m_AnchoredPosition: {x: 0, y: 200.00012}
   m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2033331128

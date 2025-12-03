@@ -44,6 +44,8 @@ public class PlayerController2D : MonoBehaviour
     public AudioSource walkSource;
     public AudioClip walkClip;
     public AudioClip sandWalkClip;
+    public AudioClip jumpSoundClip;
+
 
     // Physique et états
     MovementMode movementMode = MovementMode.Normal;
@@ -227,6 +229,10 @@ public class PlayerController2D : MonoBehaviour
             vy = adjustedJumpVelocity;
             jumpBufferTimer = 0f;
             coyoteTimer = 0f;
+            if (jumpSoundClip != null)
+            {
+                AudioManager.Instance.PlaySoundClip(jumpSoundClip, 0.5f);
+            }
         }
 
         if (grounded)
