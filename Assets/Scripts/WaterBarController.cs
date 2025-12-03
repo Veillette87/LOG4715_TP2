@@ -6,8 +6,8 @@ public class WaterBarController : MonoBehaviour
 {
     public Image waterBarImage;
     public Sprite[] waterFrames;
-    [Range(0.1f, 2f)]
-    public float frameDelay = 1f;
+    [Range(0.1f, 5f)]
+    public float frameDelay = 2f;
 
     [HideInInspector]
     public float waterLevel = 1f; // 1 = plein, 0 = vide
@@ -24,15 +24,16 @@ public class WaterBarController : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(frameDelay);
-
-            waterLevel -= 1f / (waterFrames.Length - 1);
-            waterLevel = Mathf.Clamp01(waterLevel); // Empêche d’aller en dessous de 0
-
+            // Update UI first to show current state
             currentFrame = Mathf.RoundToInt((1f - waterLevel) * (waterFrames.Length - 1));
             currentFrame = Mathf.Clamp(currentFrame, 0, waterFrames.Length - 1);
-
             waterBarImage.sprite = waterFrames[currentFrame];
+
+            yield return new WaitForSeconds(frameDelay);
+
+            // Then reduce water level for next iteration
+            waterLevel -= 1f / (waterFrames.Length - 1);
+            waterLevel = Mathf.Clamp01(waterLevel); // Empêche d'aller en dessous de 0
         }
     }
 

@@ -210,8 +210,8 @@ public class PlayerController2D : MonoBehaviour
         float waterFactor = 1f;
         if (waterBar != null)
         {
-            // Quand waterLevel = 0, vitesse et saut divisés par 2
-            waterFactor = Mathf.Lerp(0.5f, 1f, waterBar.waterLevel);
+            // Only slow down when water is completely empty (waterLevel = 0)
+            waterFactor = (waterBar.waterLevel <= 0f) ? 0.5f : 1f;
         }
 
         float sandFactor = (pq != null && pq.InSand) ? sandSpeedMultiplier : 1f;
