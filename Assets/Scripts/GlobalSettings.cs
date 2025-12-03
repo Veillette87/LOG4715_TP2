@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class GlobalSettings : MonoBehaviour
 {
@@ -11,8 +12,11 @@ public class GlobalSettings : MonoBehaviour
 
     public bool IsUIVisible = false;
     public bool IsLightsOn = true;
+
+    private Light2D lightsComponent;
     void Awake()
     {
+        lightsComponent = lightsObject.GetComponent<Light2D>();
         // Singleton logic
         if (Instance != null && Instance != this)
         {
@@ -21,7 +25,7 @@ public class GlobalSettings : MonoBehaviour
         }
 
         Instance = this;
-        lightsObject.SetActive(false);
+        lightsComponent.intensity = 1.0f;
     }
 
     void Update()
@@ -40,6 +44,6 @@ public class GlobalSettings : MonoBehaviour
     public void SetLightsState(bool isOn)
     {
         IsLightsOn = isOn;
-        lightsObject.SetActive(!isOn);
+        lightsComponent.intensity = isOn ? 1.0f : 0f;
     }
 }
