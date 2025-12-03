@@ -35,7 +35,7 @@ public class DoorProximityByDistance : MonoBehaviour
             ShowEnigmeUI();
         }
 
-        if (enigmeUI && enigmeUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        if (enigmeUI && enigmeUI.activeSelf && Input.GetKeyDown(KeyCode.X))
         {
             HideEnigmeUI();
         }
