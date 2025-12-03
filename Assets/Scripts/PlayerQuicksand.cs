@@ -6,6 +6,7 @@ public class PlayerQuicksand : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
     public int jumpsNeeded = 2;
     public float escapeImpulse = 15f;
+    public WaterBarController waterBar;
 
     int jumps;
     public bool InSand { get; private set; }
@@ -55,6 +56,13 @@ public class PlayerQuicksand : MonoBehaviour
 
         if (Input.GetKeyDown(ControlsManager.GetKey(PlayerAction.Jump)))
         {
+
+            if (waterBar != null && waterBar.waterLevel <= 0f)
+            {
+                Debug.Log("Player: Cannot escape quicksand, no water!");
+                return;
+            }
+
             jumps++;
             Debug.Log("Player: quicksand jump press " + jumps + "/" + jumpsNeeded);
 
