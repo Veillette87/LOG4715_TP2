@@ -11,6 +11,8 @@ public class LevelManager : MonoBehaviour
 
     public Transform contentParent;
 
+    public AudioSource gameMusic;
+
     [System.Serializable]
     public class ActionButton
     {
@@ -38,6 +40,7 @@ public class LevelManager : MonoBehaviour
                 baseMenu.SetActive(true);
                 controlMenu.SetActive(false);
                 Time.timeScale = 0f;
+                gameMusic.Pause();
                 GlobalSettings.Instance.SetUIVisibility(true);
             }
         }
@@ -45,8 +48,8 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        gameMusic.Play();
         BackToGame();
-
         foreach (var ab in buttons)
         {
             UpdateButtonText(ab.action, ab.buttonText);
@@ -60,6 +63,7 @@ public class LevelManager : MonoBehaviour
         baseMenu.SetActive(false);
         controlMenu.SetActive(false);
         Time.timeScale = 1f;
+        gameMusic.UnPause();
         GlobalSettings.Instance.SetUIVisibility(false);
     }
 
