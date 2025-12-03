@@ -21,13 +21,15 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
     Rigidbody2D rb;
     PlayerController2D motor;
     DistanceJoint2D joint;
+    ResizeCharacter resize;
 
     Vector2 anchor;
     bool active;
 
     void Awake()
-    {
+    {   
         rb = GetComponent<Rigidbody2D>();
+        resize = GetComponent<ResizeCharacter>();
         motor = GetComponent<PlayerController2D>();
         joint = gameObject.AddComponent<DistanceJoint2D>();
         joint.enabled = false;
@@ -41,6 +43,11 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
 
     void Update()
     {
+        // Interdit totalement le grappin si le joueur est mini
+        if (resize != null && resize.isTiny)
+        {
+            return;
+        }
         // Toggle du grappin (click droit)
         if (Input.GetMouseButtonDown(1)) // bouton droit de la souris
         {
@@ -221,5 +228,16 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
         Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 dir = mouse - transform.position;
         return (Vector2)dir;
+    }
+
+    public bool IsGrappling()
+    {
+        return active;
+    }
+
+    public void HidePreview()
+    {
+        if (aimLine != null) aimLine.enabled = false;
+        if (reticle != null) reticle.gameObject.SetActive(false);
     }
 }

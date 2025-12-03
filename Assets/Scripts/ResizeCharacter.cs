@@ -22,6 +22,8 @@ public class ResizeCharacter : MonoBehaviour
     [SerializeField] float ceilingCheckDistance = 1.3f;
     public bool isTiny;
 
+    [SerializeField] GrappleController2D grapple;
+
     Vector3 _scaleNormal;
     float _moveSpeed0, _airMax0, _desiredJumpHeight0;
     float _ortho0;
@@ -37,6 +39,9 @@ public class ResizeCharacter : MonoBehaviour
     {
         if (controller == null) controller = GetComponent<PlayerController2D>();
         if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        if (grapple == null)
+            grapple = GetComponent<GrappleController2D>();
 
         _scaleNormal = transform.localScale;
 
@@ -69,6 +74,10 @@ public class ResizeCharacter : MonoBehaviour
 
     public void Toggle()
     {
+        // Empêche le shrink si grappin actif
+        if (grapple != null && grapple.IsGrappling())
+            return;
+
         if (isTiny) GrowToNormal();
         else ShrinkToTiny();
     }
@@ -77,6 +86,9 @@ public class ResizeCharacter : MonoBehaviour
     {
         if (isTiny) return;
         isTiny = true;
+        
+        if (grapple != null)
+            grapple.HidePreview();
 
         float k = Mathf.Clamp(tinyScaleFactor, 0.05f, 1f);
 
