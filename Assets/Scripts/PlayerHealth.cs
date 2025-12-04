@@ -20,6 +20,9 @@ public class PlayerHealth : MonoBehaviour
     public float knockbackForceX = 5f;
     public float knockbackForceY = 6f;
 
+    [Header("Layers qui infligent des dégâts")]
+    public LayerMask damageLayers;
+
     [Header("Dégâts continus")]
     public float damageInterval = 1f; // temps entre deux dégâts si on reste sur un pic
 
@@ -182,10 +185,22 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    bool IsInDamageLayer(int layer)
+    {
+        return (damageLayers.value & (1 << layer)) != 0;
+    }
+
+    // Lors d'un checkpoint
+    public void ResetHPToMax()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+    }
+
     // Détection des pics
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Quicksand"))
+        if (IsInDamageLayer(other.gameObject.layer))
         {
             StartDamageOverTime(other);
         }
@@ -193,16 +208,16 @@ public class PlayerHealth : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Quicksand"))
+        if (IsInDamageLayer(other.gameObject.layer))
         {
             StopDamageOverTime();
         }
     }
 
-    void StartDamageOverTime(Collider2D quicksand)
+    void StartDamageOverTime(Collider2D damageSource)
     {
         if (damageCoroutine == null)
-            damageCoroutine = StartCoroutine(DamageOverTime(quicksand));
+            damageCoroutine = StartCoroutine(DamageOverTime(damageSource));
     }
 
     void StopDamageOverTime()
@@ -214,7 +229,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    IEnumerator DamageOverTime(Collider2D quicksand)
+    IEnumerator DamageOverTime(Collider2D damageSource)
     {
         while (true)
         {
@@ -222,7 +237,7 @@ public class PlayerHealth : MonoBehaviour
             while (isInvincible || isDead)
                 yield return null;
 
-            Vector2 hitDir = (transform.position - quicksand.transform.position).normalized;
+            Vector2 hitDir = (transform.position - damageSource.transform.position).normalized;
             TakeDamage(1, hitDir);
 
             // Attendre avant de pouvoir reprendre un dégât

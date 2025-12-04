@@ -62,6 +62,29 @@ public class PanelPuzzleController : MonoBehaviour
         if (!ok) return;
 
         solved = true;
+
+        // 1. On récupère la position du joueur (plus sûr que la position du puzzle)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            // On sauvegarde la position actuelle du joueur comme nouveau point de respawn
+            Vector3 newPos = player.transform.position;
+            newPos.x += 2f;
+            
+            CheckpointData.checkpointPos = newPos;
+            CheckpointData.hasCheckpoint = true;
+            
+            // Optionnel : Si tu veux aussi soigner le joueur après l'énigme
+            var hp = player.GetComponent<PlayerHealth>();
+            if (hp) hp.ResetHPToMax();
+        }
+        else
+        {
+            // Si jamais on ne trouve pas le joueur, on utilise la position du puzzle par sécurité
+            CheckpointData.checkpointPos = transform.position; 
+            CheckpointData.hasCheckpoint = true;
+        }
+
         LockSlots();
         var door = GameObject.FindGameObjectWithTag("Door");
         if (door)

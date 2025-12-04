@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
 
     public void GameStart()
     {
-        string sceneName = "Gym_TP3_level";
+        string sceneName = "Gym_TP3_level 1";
         SceneManager.LoadScene(sceneName);
     }
 

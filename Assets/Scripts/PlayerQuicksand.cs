@@ -78,8 +78,6 @@ public class PlayerQuicksand : MonoBehaviour
 
                     rb.AddForce(Vector2.up * escapeImpulse, ForceMode2D.Impulse);
 
-                    StartCoroutine(TemporaryImmunity(0.25f));
-
                     Debug.Log("Player: escaped quicksand");
                 }
 
@@ -88,17 +86,6 @@ public class PlayerQuicksand : MonoBehaviour
                 currentZone = null;
             }
 
-        }
-    }
-
-    System.Collections.IEnumerator TemporaryImmunity(float delay)
-    {
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null)
-        {
-            col.enabled = false;
-            yield return new WaitForSeconds(delay);
-            col.enabled = true;
         }
     }
 }

@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: ea20eddb98faaf6489712c1ceb920791
+  - enabled: 1
+    path: Assets/Scenes/Gym_TP3_level 1.unity
+    guid: f5ebe7a2bce8bcd4993761ea34150b03
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

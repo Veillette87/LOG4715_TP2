@@ -211,7 +211,7 @@ public class PlayerController2D : MonoBehaviour
         if (waterBar != null)
         {
             // Only slow down when water is completely empty (waterLevel = 0)
-            waterFactor = (waterBar.waterLevel <= 0f) ? 0.5f : 1f;
+            waterFactor = (waterBar.waterLevel <= 0f) ? 0.65f : 1f;
         }
 
         float sandFactor = (pq != null && pq.InSand) ? sandSpeedMultiplier : 1f;
