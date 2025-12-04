@@ -10,6 +10,8 @@ public class PanelPuzzleController : MonoBehaviour
     [SerializeField] private SlotCycler slot2;
     [SerializeField] private SlotCycler slot3;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private DoorSequence doorSequence;
+    [SerializeField] private GameObject door;
     float audioLength = 3f;
 
     [Header("Correct combination (indexes)")]
@@ -70,10 +72,10 @@ public class PanelPuzzleController : MonoBehaviour
             // On sauvegarde la position actuelle du joueur comme nouveau point de respawn
             Vector3 newPos = player.transform.position;
             newPos.x += 2f;
-            
+
             CheckpointData.checkpointPos = newPos;
             CheckpointData.hasCheckpoint = true;
-            
+
             // Optionnel : Si tu veux aussi soigner le joueur après l'énigme
             var hp = player.GetComponent<PlayerHealth>();
             if (hp) hp.ResetHPToMax();
@@ -81,12 +83,11 @@ public class PanelPuzzleController : MonoBehaviour
         else
         {
             // Si jamais on ne trouve pas le joueur, on utilise la position du puzzle par sécurité
-            CheckpointData.checkpointPos = transform.position; 
+            CheckpointData.checkpointPos = transform.position;
             CheckpointData.hasCheckpoint = true;
         }
 
         LockSlots();
-        var door = GameObject.FindGameObjectWithTag("Door");
         if (door)
         {
             if (audioSource)
@@ -94,10 +95,9 @@ public class PanelPuzzleController : MonoBehaviour
                 audioSource.time = 3f;
                 audioSource.Play();
             }
-            var runner = GameObject.FindGameObjectWithTag("Object").GetComponent<DoorSequence>();
-            if (runner)
+            if (doorSequence)
             {
-                runner.PlayFromAndClose(door, startAtSeconds: 3f, playSeconds: 2.5f);
+                doorSequence.PlayFromAndClose(door, startAtSeconds: 3f, playSeconds: 2.5f);
             }
 
             var doorProx = door.GetComponent<DoorProximityByDistance>()
