@@ -27,7 +27,7 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
     bool active;
 
     void Awake()
-    {   
+    {
         rb = GetComponent<Rigidbody2D>();
         resize = GetComponent<ResizeCharacter>();
         motor = GetComponent<PlayerController2D>();
@@ -115,18 +115,14 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
 
         RaycastHit2D hit = Physics2D.Raycast(origin, dir, maxGrappleDistance, grappleMask);
 
-        Vector3 endPoint;
-        bool valid = false;
+        if (!hit)
+        {
+            if (aimLine != null) aimLine.enabled = false;
+            if (reticle != null) reticle.gameObject.SetActive(false);
+            return;
+        }
 
-        if (hit)
-        {
-            endPoint = hit.point;
-            valid = true;
-        }
-        else
-        {
-            endPoint = origin + dir * maxGrappleDistance;
-        }
+        Vector3 endPoint = hit.point;
 
         if (aimLine != null)
         {
@@ -134,17 +130,17 @@ public class GrappleController2D : MonoBehaviour, IExternalKinematics
             aimLine.positionCount = 2;
             aimLine.SetPosition(0, origin);
             aimLine.SetPosition(1, endPoint);
-            var c = valid ? inRangeColor : outOfRangeColor;
-            aimLine.startColor = c;
-            aimLine.endColor = c;
+            aimLine.startColor = inRangeColor;
+            aimLine.endColor = inRangeColor;
         }
 
         if (reticle != null)
         {
             reticle.gameObject.SetActive(true);
             reticle.position = endPoint;
+
             var sr = reticle.GetComponent<SpriteRenderer>();
-            if (sr != null) sr.color = valid ? inRangeColor : outOfRangeColor;
+            if (sr != null) sr.color = inRangeColor;
         }
     }
 

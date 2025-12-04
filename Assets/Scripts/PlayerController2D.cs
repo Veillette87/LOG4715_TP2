@@ -46,6 +46,11 @@ public class PlayerController2D : MonoBehaviour
     public AudioClip sandWalkClip;
     public AudioClip jumpSoundClip;
 
+    [Header("Grapple")]
+    [SerializeField] float grappleExitDuration = 0.3f;
+    [SerializeField] float grappleExitDrag = 0.95f;
+    float grappleExitTimer = 0f;
+
 
     // Physique et états
     MovementMode movementMode = MovementMode.Normal;
@@ -110,6 +115,9 @@ public class PlayerController2D : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (grappleExitTimer > 0)
+            grappleExitTimer -= Time.fixedDeltaTime;
+
         switch (movementMode)
         {
             case MovementMode.Normal:
@@ -241,9 +249,21 @@ public class PlayerController2D : MonoBehaviour
         }
         else
         {
-            float target = input.x * airMax * totalSpeedMultiplier;
-            float maxDelta = airAccel * Time.fixedDeltaTime;
-            vx = Mathf.MoveTowards(vx, target, maxDelta);
+            if (grappleExitTimer > 0f)
+            {
+                vx *= grappleExitDrag;
+                if (Mathf.Abs(input.x) > 0.1f)
+                {
+                    vx += input.x * airAccel * 0.25f * Time.fixedDeltaTime;
+                }
+            }
+            else
+            {
+                float target = input.x * airMax * totalSpeedMultiplier;
+                float maxDelta = airAccel * Time.fixedDeltaTime;
+                vx = Mathf.MoveTowards(vx, target, maxDelta);
+            }
+
         }
 
         if (vy > 0.01f)
@@ -334,6 +354,7 @@ public class PlayerController2D : MonoBehaviour
     {
         ext = null;
         movementMode = MovementMode.Normal;
+        grappleExitTimer = grappleExitDuration;
     }
 
     void DetectPushable()
