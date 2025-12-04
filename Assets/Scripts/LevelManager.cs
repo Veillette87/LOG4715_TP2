@@ -69,6 +69,7 @@ public class LevelManager : MonoBehaviour
 
     public void GameReset()
     {
+        CheckpointData.ResetData(); // supression du checkpoint
         Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadScene(current.buildIndex);
         BackToGame();
@@ -82,6 +83,7 @@ public class LevelManager : MonoBehaviour
 
     public void QuitGame()
     {
+        CheckpointData.ResetData(); // supression du checkpoint
         string sceneName = "MenuScene";
         SceneManager.LoadScene(sceneName);
     }
