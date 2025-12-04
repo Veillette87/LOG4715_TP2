@@ -11,7 +11,7 @@ public class GlobalSettings : MonoBehaviour
     public float masterVolume = 1.0f;
 
     public bool IsUIVisible = false;
-    public bool IsLightsOn = true;
+    public bool IsLightsOn = false;
 
     private Light2D lightsComponent;
     void Awake()
@@ -25,7 +25,7 @@ public class GlobalSettings : MonoBehaviour
         }
 
         Instance = this;
-        lightsComponent.intensity = 1.0f;
+        lightsComponent.intensity = 0f;
     }
 
     void Update()
