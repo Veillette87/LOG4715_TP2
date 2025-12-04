@@ -1,6 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
+public enum ShootDirection
+{
+    Left,
+    Right,
+    Up,
+    Down
+}
 
 public class PressurePlateObject : MonoBehaviour
 {
@@ -13,6 +20,7 @@ public class PressurePlateObject : MonoBehaviour
     [Header("Arrow Settings")]
     public GameObject arrowPrefab;
     public Transform[] shootPoints;
+    public ShootDirection shootDirection = ShootDirection.Left;
     public float shootSpeed = 10f;
     public float resetTime = 2f; private float boxColliderOffsetPressedY = -0.35f;
     private float boxColliderOffsetReadyY = -0.3f;
@@ -70,7 +78,7 @@ public class PressurePlateObject : MonoBehaviour
                     Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
                     if (rb != null)
                     {
-                        Vector2 direction = -shootPoint.right;
+                        Vector2 direction = GetShootDirection();
                         rb.linearVelocity = direction * shootSpeed;
 
                         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -78,6 +86,23 @@ public class PressurePlateObject : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private Vector2 GetShootDirection()
+    {
+        switch (shootDirection)
+        {
+            case ShootDirection.Left:
+                return Vector2.left;
+            case ShootDirection.Right:
+                return Vector2.right;
+            case ShootDirection.Up:
+                return Vector2.up;
+            case ShootDirection.Down:
+                return Vector2.down;
+            default:
+                return Vector2.left;
         }
     }
 
