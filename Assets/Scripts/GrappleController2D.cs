@@ -3,7 +3,7 @@ using UnityEngine;
 public class GrappleController2D : MonoBehaviour, IExternalKinematics
 {
     [SerializeField] LayerMask grappleMask;
-    [SerializeField] float maxGrappleDistance = 8f;
+    [SerializeField] float maxGrappleDistance = 9f;
     [SerializeField] LineRenderer rope;
     [SerializeField] float swingForce = 25f;
     [SerializeField] float radialDamp = 0.2f;
