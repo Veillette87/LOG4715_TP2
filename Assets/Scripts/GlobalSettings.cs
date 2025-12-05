@@ -27,15 +27,6 @@ public class GlobalSettings : MonoBehaviour
         Instance = this;
         lightsComponent.intensity = 0f;
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            SetLightsState(!IsLightsOn);
-        }
-    }
-
     public void SetUIVisibility(bool isVisible)
     {
         IsUIVisible = isVisible;
