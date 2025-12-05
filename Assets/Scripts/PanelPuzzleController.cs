@@ -69,18 +69,24 @@ public class PanelPuzzleController : MonoBehaviour
         LockSlots();
         
         // On ouvre la porte instantanément ou on joue l'anim de fin
-        if (door && doorSequence)
-        {
-            // On force la porte ouverte sans jouer le son ni attendre
-            doorSequence.PlayFromAndClose(door, startAtSeconds: 3f, playSeconds: 0f); // playSeconds 0 pour instantané si possible, sinon garde ton réglage
-        }
-        
-        // On cache l'UI
         if (door)
         {
-             var doorProx = door.GetComponent<DoorProximityByDistance>()
+            if (audioSource)
+            {
+                audioSource.time = 3f;
+                audioSource.Play();
+            }
+            if (doorSequence)
+            {
+                doorSequence.PlayFromAndClose(door, startAtSeconds: 3f, playSeconds: 2.5f);
+            }
+
+            var doorProx = door.GetComponent<DoorProximityByDistance>()
                             ?? door.GetComponentInChildren<DoorProximityByDistance>();
-            if (doorProx != null) doorProx.HideEnigmeUI();
+            if (doorProx != null)
+            {
+                doorProx.HideEnigmeUI();
+            }
         }
     }
 
