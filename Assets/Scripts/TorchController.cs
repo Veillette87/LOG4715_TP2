@@ -24,7 +24,7 @@ public class TorchController : MonoBehaviour
             hasTorch = !hasTorch;
             ApplyAll();
         }
-        if (hasTorch && !GlobalSettings.Instance.IsLightsOn)
+        if (hasTorch)
         {
             torchLight.enabled = true;
         }
