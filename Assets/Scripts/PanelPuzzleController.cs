@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class PanelPuzzleController : MonoBehaviour
 {
+    [Header("Identifiant Unique (IMPORTANT)")]
+    [Tooltip("Donne un nom différent à chaque puzzle (ex: Puzzle_Niveau1, Puzzle_Foret, etc.)")]
+    public string puzzleID = "Puzzle_Default"; // <-- NOUVEAU
+
     [Header("Slots (order matters: left → right)")]
     [SerializeField] private SlotCycler slot1;
     [SerializeField] private SlotCycler slot2;
@@ -15,20 +19,18 @@ public class PanelPuzzleController : MonoBehaviour
     float audioLength = 3f;
 
     [Header("Correct combination (indexes)")]
-    // Example: 0 = glyph1, 1 = glyph2, 2 = glyph3
     [SerializeField] private int[] correct = new int[3] { 2, 0, 1 };
 
     private bool solved;
 
     private void Awake()
     {
-
+        // ... (Ton code d'initialisation des slots reste identique) ...
         if (!slot1 || !slot2 || !slot3)
         {
             var slots = GetComponentsInChildren<SlotCycler>(true);
             if (slots.Length >= 3)
             {
-                //order left→right
                 slot1 = slots[0];
                 slot2 = slots[1];
                 slot3 = slots[2];
@@ -38,15 +40,48 @@ public class PanelPuzzleController : MonoBehaviour
         HookSlot(slot1);
         HookSlot(slot2);
         HookSlot(slot3);
+    }
 
-        Check();
+    private void Start()
+    {
+        // NOUVEAU : Vérification au démarrage
+        // Si cet ID est déjà dans la mémoire statique, on met l'état "Résolu" directement
+        if (CheckpointData.solvedPuzzles.Contains(puzzleID))
+        {
+            SetAlreadySolvedState();
+        }
+        else
+        {
+            Check(); // Vérification normale
+        }
     }
 
     private void HookSlot(SlotCycler slot)
     {
         if (!slot) return;
-
         slot.onValueChanged.AddListener(Check);
+    }
+
+    // Cette fonction sert à remettre le puzzle en état "fini" sans donner les bonus (vie/checkpoint)
+    private void SetAlreadySolvedState()
+    {
+        solved = true;
+        LockSlots();
+        
+        // On ouvre la porte instantanément ou on joue l'anim de fin
+        if (door && doorSequence)
+        {
+            // On force la porte ouverte sans jouer le son ni attendre
+            doorSequence.PlayFromAndClose(door, startAtSeconds: 3f, playSeconds: 0f); // playSeconds 0 pour instantané si possible, sinon garde ton réglage
+        }
+        
+        // On cache l'UI
+        if (door)
+        {
+             var doorProx = door.GetComponent<DoorProximityByDistance>()
+                            ?? door.GetComponentInChildren<DoorProximityByDistance>();
+            if (doorProx != null) doorProx.HideEnigmeUI();
+        }
     }
 
     public void Check()
@@ -54,39 +89,43 @@ public class PanelPuzzleController : MonoBehaviour
         if (solved) return;
         if (!slot1 || !slot2 || !slot3 || correct.Length < 3) return;
 
-
         bool ok =
             slot1.GetIndex() == correct[0] &&
             slot2.GetIndex() == correct[1] &&
             slot3.GetIndex() == correct[2];
 
-
         if (!ok) return;
 
+        // --- SUCCÈS : C'est ici que le joueur résout l'énigme pour la PREMIÈRE fois ---
+        
         solved = true;
+        
+        // 1. On l'ajoute à la mémoire pour ne plus jamais le refaire
+        if (!CheckpointData.solvedPuzzles.Contains(puzzleID))
+        {
+            CheckpointData.solvedPuzzles.Add(puzzleID);
+        }
 
-        // 1. On récupère la position du joueur (plus sûr que la position du puzzle)
+        // 2. Checkpoint logic
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            // On sauvegarde la position actuelle du joueur comme nouveau point de respawn
             Vector3 newPos = player.transform.position;
             newPos.x += 2f;
-
             CheckpointData.checkpointPos = newPos;
             CheckpointData.hasCheckpoint = true;
 
-            // Optionnel : Si tu veux aussi soigner le joueur après l'énigme
+            // 3. LE SOIN : Se produit uniquement ici, lors de la résolution active
             var hp = player.GetComponent<PlayerHealth>();
             if (hp) hp.ResetHPToMax();
         }
         else
         {
-            // Si jamais on ne trouve pas le joueur, on utilise la position du puzzle par sécurité
             CheckpointData.checkpointPos = transform.position;
             CheckpointData.hasCheckpoint = true;
         }
 
+        // 4. Animation et Son
         LockSlots();
         if (door)
         {
@@ -101,13 +140,12 @@ public class PanelPuzzleController : MonoBehaviour
             }
 
             var doorProx = door.GetComponent<DoorProximityByDistance>()
-                           ?? door.GetComponentInChildren<DoorProximityByDistance>();
+                            ?? door.GetComponentInChildren<DoorProximityByDistance>();
             if (doorProx != null)
             {
                 doorProx.HideEnigmeUI();
             }
         }
-
     }
 
     private void LockSlots()
@@ -123,5 +161,4 @@ public class PanelPuzzleController : MonoBehaviour
         var btn = slot.GetComponent<Button>() ?? slot.GetComponentInChildren<Button>(true);
         if (btn) btn.interactable = value;
     }
-
 }
